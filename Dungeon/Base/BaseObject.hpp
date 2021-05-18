@@ -5,6 +5,13 @@ namespace Engine
 {
 	class CWorld;
 
+	enum class Faction : char
+	{
+		World = 0,
+		Player = 1,
+		EnemyOfAll = 2
+	};
+
 	//base object for everything that player will interact in world
 	class CBaseObject
 	{
@@ -23,6 +30,8 @@ namespace Engine
 		CWorld* World = nullptr;
 
 		Vector Location;
+
+		Faction Faction = Faction::World;
 
 		char GetDisplayCharacter()const { return DisplayCharacter; }
 

@@ -5,7 +5,9 @@ namespace Engine
 	class CEnemyBase : public CPawn
 	{
 	public:
-		int Range;
+		int Range = 1;
+
+		CEnemyBase();
 
 		virtual void Update()override;
 

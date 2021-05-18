@@ -27,6 +27,7 @@ namespace Engine
 {
 	struct Vector
 	{
+	public:
 		int X = 0;
 
 		int Y = 0;
@@ -46,6 +47,10 @@ namespace Engine
 		int Distance(Vector);
 
 		int DistanceSquared(Vector);
+
+		Vector Normalise();
+
+		int Lenght();
 	};
 }
 

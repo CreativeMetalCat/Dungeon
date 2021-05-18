@@ -22,3 +22,13 @@ int Engine::Vector::DistanceSquared(Vector a)
 {
 	return (X - a.X)* (X - a.X) + (Y - a.Y)* (Y - a.Y);
 }
+
+Engine::Vector Engine::Vector::Normalise()
+{
+	return *this / this->Lenght();
+}
+
+int Engine::Vector::Lenght()
+{
+	return sqrt(X * X + Y * Y);
+}

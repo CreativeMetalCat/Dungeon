@@ -3,6 +3,7 @@
 
 Dungeon::CPlayer::CPlayer() :Engine::CPawn('@')
 {
+	Faction = Engine::Faction::Player;
 }
 
 void Dungeon::CPlayer::ProcessInput(char input)
@@ -11,22 +12,22 @@ void Dungeon::CPlayer::ProcessInput(char input)
 	{
 	case 'a':
 	{
-		Move(Engine::Vector(Location.X - 1, Location.Y));
+		Move(Engine::Vector(-1, 0));
 		break;
 	}
 	case 'd':
 	{
-		Move(Engine::Vector(Location.X + 1, Location.Y));
+		Move(Engine::Vector(1, 0));
 		break;
 	}
 	case 's':
 	{
-		Move(Engine::Vector(Location.X , Location.Y + 1));
+		Move(Engine::Vector(0, 1));
 		break;
 	}
 	case 'w':
 	{
-		Move(Engine::Vector(Location.X, Location.Y - 1));
+		Move(Engine::Vector(0, -1));
 		break;
 	}
 	default:

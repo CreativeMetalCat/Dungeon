@@ -6,6 +6,8 @@
 
 #include <iostream>
 #include <string>
+#include "Base/Pawns/Enemy/EnemyBase.hpp"
+
 int main()
 {
 	//init pdcurses
@@ -41,6 +43,10 @@ int main()
 			}
 		
 	}
+	CEnemyBase* enemy = world->SpawnObject<CEnemyBase>();
+	enemy->Location = Vector(5, 5);
+	enemy->Collision = CollisionType::Block;
+	
 
 	//update cycle
 
@@ -51,9 +57,11 @@ int main()
 		for (int i = 0; i < world->Objects.size(); i++) 
 		{
 			world->Objects[i]->ProcessInput(input);
+			
 		}
 		for (auto it = world->Objects.begin();it != world->Objects.end();++it)
 		{
+			(*it)->Update();
 			if ((*it) != player)
 			{
 				mvaddch( (*it)->Location.Y + 15 - player->Location.Y,  (*it)->Location.X - player->Location.X + 60, (*it)->GetDisplayCharacter());
