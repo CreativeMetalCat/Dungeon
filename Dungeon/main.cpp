@@ -27,15 +27,14 @@ int main()
 	for (int i = 0; i < 10;i++)
 	{
 		
-			CPawn* obj = new CPawn('#');
+			CPawn* obj = world->SpawnObject<CPawn>('#');
 			obj->Collision = CollisionType::Block;
 			obj->Location.Y = i;
 			obj->Location.X = 0;
-			world->Objects.push_back(obj);
 
 			if (i != 5)
 			{
-				CPawn* obj2 = world->SpawnObject<CPawn>();
+				CPawn* obj2 = world->SpawnObject<CPawn>('#');
 				obj2->Collision = CollisionType::Block;
 				obj2->Location.Y = i;
 				obj2->Location.X = 10;
@@ -55,7 +54,14 @@ int main()
 		}
 		for (auto it = world->Objects.begin();it != world->Objects.end();++it)
 		{
-			mvaddch((*it)->Location.Y, (*it)->Location.X, (*it)->GetDisplayCharacter());
+			if ((*it) != player)
+			{
+				mvaddch( (*it)->Location.Y + 15 - player->Location.Y,  (*it)->Location.X - player->Location.X + 60, (*it)->GetDisplayCharacter());
+			}
+			else
+			{
+				mvaddch(15, 60, (*it)->GetDisplayCharacter());
+			}
 		}
 
 		move(500, 0);
