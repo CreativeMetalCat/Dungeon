@@ -1,0 +1,15 @@
+#pragma once
+#include "Base/Pawns/Pawn.hpp"
+namespace Engine
+{
+	class CEnemyBase : public CPawn
+	{
+	public:
+		int Range;
+
+		virtual void Update()override;
+
+		virtual void Attack(CBaseObject* victim) {}
+	};
+}
+

@@ -3,11 +3,15 @@
 #include <vector>
 #include <list>
 
+#include <iostream>
+
 template<class T>
 using  Array = std::vector<T>;
 
 template<class T>
 using  List = std::list<T>;
+
+typedef std::string String;
 
 enum CollisionType
 {
@@ -38,6 +42,10 @@ namespace Engine
 		Vector operator-(Vector);
 
 		bool operator==(Vector);
+
+		int Distance(Vector);
+
+		int DistanceSquared(Vector);
 	};
 }
 

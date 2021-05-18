@@ -35,11 +35,10 @@ int main()
 
 			if (i != 5)
 			{
-				CPawn* obj2 = new CPawn('#');
+				CPawn* obj2 = world->SpawnObject<CPawn>();
 				obj2->Collision = CollisionType::Block;
 				obj2->Location.Y = i;
 				obj2->Location.X = 10;
-				world->Objects.push_back(obj2);
 			}
 		
 	}

@@ -11,11 +11,16 @@ namespace Engine
 	protected:
 		char DisplayCharacter;
 	public:
+		//id is not used for anything as of now, but could be useful for debug
+		unsigned int id = 0;
 
 		CBaseObject(char displayChar = '#'):DisplayCharacter(displayChar){}
 
+		//This is the name used when telling stuff to player(lfor example #DisplayName# killed player with knife)
+		String DisplayName = "Object";
+
 		//World in which this object exists
-		CWorld* World;
+		CWorld* World = nullptr;
 
 		Vector Location;
 

@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="Base\BaseObject.cpp" />
     <ClCompile Include="Base\Types\Types.cpp" />
+    <ClCompile Include="Base\Pawns\Enemy\EnemyBase.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Base\Pawns\Pawn.cpp" />
     <ClCompile Include="Base\Player\Player.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Base\Types\Types.hpp" />
     <ClInclude Include="Base\Pawns\Pawn.hpp" />
     <ClInclude Include="Base\Player\Player.hpp" />
+    <ClInclude Include="Base\Pawns\Enemy\EnemyBase.hpp" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

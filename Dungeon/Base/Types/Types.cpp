@@ -12,3 +12,13 @@ bool Engine::Vector::operator==(Engine::Vector a )
 {
 	return X == a.X && Y == a.Y;
 }
+
+int Engine::Vector::Distance(Vector a)
+{
+	return (int)sqrt(DistanceSquared(a));
+}
+
+int Engine::Vector::DistanceSquared(Vector a)
+{
+	return (X - a.X)* (X - a.X) + (Y - a.Y)* (Y - a.Y);
+}
