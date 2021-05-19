@@ -147,6 +147,7 @@
     <ClCompile Include="Base\Types\Types.cpp" />
     <ClCompile Include="Base\Pawns\Enemy\EnemyBase.cpp" />
     <ClCompile Include="Base\Item\Item.cpp" />
+    <ClCompile Include="Base\Item\ItemPickup.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Base\Pawns\Pawn.cpp" />
     <ClCompile Include="Base\Player\Player.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Base\Pawns\Enemy\EnemyBase.hpp" />
     <ClInclude Include="Base\UI\UIBase.hpp" />
     <ClInclude Include="Base\Item\Item.hpp" />
+    <ClInclude Include="Base\Item\ItemPickup.hpp" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

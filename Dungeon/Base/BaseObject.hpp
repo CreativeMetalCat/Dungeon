@@ -44,5 +44,7 @@ namespace Engine
 		virtual void ProcessInput(char) {}
 
 		virtual void OnOverlap(CBaseObject* other) {}
+
+		virtual void Destroy();
 	};
 }

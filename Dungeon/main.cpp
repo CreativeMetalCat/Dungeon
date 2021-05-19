@@ -7,7 +7,7 @@
 #include <iostream>
 #include <string>
 #include "Base/Pawns/Enemy/EnemyBase.hpp"
-
+#include "Base/Item/ItemPickup.hpp"
 int main()
 {
 	//init pdcurses
@@ -52,7 +52,8 @@ int main()
 	enemy->Location = Vector(5, 5);
 	enemy->Collision = CollisionType::Block;
 	
-	
+	CItemPickup* item = world->SpawnObject<CItemPickup>(Item("itemio","Trash",10,5 ));
+	item->Location = Vector(5, 6);
 
 	UI::CUIBase* ui2 = world->CreateUI<UI::CUIBase>(nullptr, "DebugUIFrame", "-Debug Info-", Vector(0, 20), Vector(15, 10), true);
 	UI::CUIBase* locText = world->CreateUI<UI::CUIBase>(ui2, "locText", "X: 0, Y: 0", Vector(1, 1), Vector(0, 0), false);

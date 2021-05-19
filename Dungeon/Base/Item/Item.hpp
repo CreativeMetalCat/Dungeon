@@ -1,14 +1,20 @@
 #pragma once
 #include "Base/Types/Types.hpp"
-struct Item
+namespace Engine
 {
-public:
-	String name = "item0";
+	struct Item
+	{
+	public:
+		Item(String _name, String displayName, int maxAmout, int currentAmout) :
+			name(_name), DisplayName(displayName), MaxAmout(maxAmout), CurrentAmout(currentAmout) {}
 
-	String DisplayName = "Item";
+		String name = "item0";
 
-	int MaxAmout = 99;
+		String DisplayName = "Item";
 
-	int CurrentAmout = 0;
-};
+		int MaxAmout = 99;
+
+		int CurrentAmout = 0;
+	};
+}
 

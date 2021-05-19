@@ -13,7 +13,7 @@ namespace Dungeon
 	public:
 		CPlayer(Engine::UI::CUIBase* _inventoryFrame = nullptr);
 
-		virtual bool AddItem(Item item,int &amountLeft, int& resultId)override;
+		virtual bool AddItem(Engine::Item item,int &amountLeft, int& resultId)override;
 
 		virtual void ProcessInput(char) override;
 

@@ -11,7 +11,7 @@ Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
 	Faction = Engine::Faction::Player;
 }
 
-bool Dungeon::CPlayer::AddItem(Item item,int &amountLeft, int& resultId)
+bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId)
 {
 	bool res = CPawn::AddItem(item, amountLeft, resultId);
 	//if we have less items that we had in the start
