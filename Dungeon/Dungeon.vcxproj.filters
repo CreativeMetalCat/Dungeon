@@ -36,6 +36,9 @@
     <ClCompile Include="Base\Pawns\Enemy\EnemyBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Base\UI\UIBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\Types\Types.hpp">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Base\Pawns\Enemy\EnemyBase.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\UI\UIBase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

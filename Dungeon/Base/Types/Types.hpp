@@ -13,6 +13,9 @@ using  List = std::list<T>;
 
 typedef std::string String;
 
+#define SCREEN_SIZE_X 120
+#define SCREEN_SIZE_Y 30
+
 enum CollisionType
 {
 	//For decorations

@@ -1,5 +1,7 @@
 #pragma once
 #include "Base/BaseObject.hpp"
+#include "Base/UI/UIBase.hpp"
+
 namespace Engine
 {
 	class CWorld
@@ -10,8 +12,13 @@ namespace Engine
 		
 		Array<Engine::CBaseObject*> Objects = Array<Engine::CBaseObject*>();
 
+		Array<Engine::UI::CUIBase*>UIElements = Array<Engine::UI::CUIBase*>();
+
 		template<class Class, class ... Args>
 		Class* SpawnObject(Args ... args);
+
+		template<class Class, class ... Args>
+		Class* CreateUI(Args...args);
 	};
 
 	template<class Class, class ...Args>
@@ -25,7 +32,21 @@ namespace Engine
 			spawnCounter++;
 			Objects.push_back(obj);
 
-			return static_cast<Class*>(obj);
+			return obj;
+		}
+		else
+		{
+			return nullptr;
+		}
+	}
+	template<class Class, class ...Args>
+	inline Class* CWorld::CreateUI(Args ...args)
+	{
+		Class* ui = new Class(args...);
+		if (ui)
+		{
+			UIElements.push_back(ui);
+			return ui;
 		}
 		else
 		{
