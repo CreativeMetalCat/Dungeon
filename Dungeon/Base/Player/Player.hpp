@@ -15,7 +15,7 @@ namespace Dungeon
 
 		virtual bool AddItem(Engine::Item item,int &amountLeft, int& resultId)override;
 
-		virtual void ProcessInput(char) override;
+		virtual void ProcessInput(int) override;
 
 		// Inherited via CPawn
 		virtual void Update() override;

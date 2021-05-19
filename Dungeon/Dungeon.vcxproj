@@ -156,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\BaseObject.hpp" />
+    <ClInclude Include="Base\Render\RenderMacros.h" />
     <ClInclude Include="Base\Types\Types.hpp" />
     <ClInclude Include="Base\Pawns\Pawn.hpp" />
     <ClInclude Include="Base\Player\Player.hpp" />

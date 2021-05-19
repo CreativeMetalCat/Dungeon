@@ -1,4 +1,5 @@
-﻿
+﻿#define PDC_FORCE_UTF8
+
 #include "pdcurses/include/curses.h"
 
 #include "Base/Player/Player.hpp"
@@ -8,11 +9,14 @@
 #include <string>
 #include "Base/Pawns/Enemy/EnemyBase.hpp"
 #include "Base/Item/ItemPickup.hpp"
+
+#include "Base/Render/RenderMacros.h"
 int main()
 {
 	//init pdcurses
 	initscr();
 	start_color();
+	keypad(stdscr, true);
 	raw();
 	noecho();
 
@@ -57,12 +61,15 @@ int main()
 
 	UI::CUIBase* ui2 = world->CreateUI<UI::CUIBase>(nullptr, "DebugUIFrame", "-Debug Info-", Vector(0, 20), Vector(15, 10), true);
 	UI::CUIBase* locText = world->CreateUI<UI::CUIBase>(ui2, "locText", "X: 0, Y: 0", Vector(1, 1), Vector(0, 0), false);
+	UI::CUIBase* keyText = world->CreateUI<UI::CUIBase>(ui2, "lastKey", "none", Vector(1, 2), Vector(0, 0), false);
 
 	//update cycle
 
-	char input = getch();
+	int input = getch();
 	while (true)
 	{
+		
+
 		clear();
 		for (int i = 0; i < world->Objects.size(); i++) 
 		{
@@ -71,61 +78,47 @@ int main()
 		}
 		for (auto it = world->Objects.begin();it != world->Objects.end();++it)
 		{
-			(*it)->Update();
-			if ((*it) != player)
+			if ((*it)->Valid())
 			{
-				mvaddch( (*it)->Location.Y + 15 - player->Location.Y,  (*it)->Location.X - player->Location.X + 60, (*it)->GetDisplayCharacter());
-			}
-			else
-			{
-				mvaddch(15, 60, (*it)->GetDisplayCharacter());
+				(*it)->Update();
+				if ((*it) != player)
+				{
+					ADD_CHAR_AT((*it)->Location.Y + 15 - player->Location.Y, (*it)->Location.X - player->Location.X + 60, (*it)->GetDisplayCharacter());
+				}
+				else
+				{
+					ADD_CHAR_AT(15, 60, (*it)->GetDisplayCharacter());
+				}
 			}
 		}
+
+		for (int i = 0;i< world->Objects.size();i++)
+		{
+			if (!world->Objects[i]->Valid())
+			{
+				delete (world->Objects[i]);
+				world->Objects.erase(world->Objects.begin() + i);
+			}
+			
+		}
+
 		locText->DisplayName = ("X: " + std::to_string(player->Location.X) + "Y: " + std::to_string(player->Location.Y)).c_str();
 
 		for (auto it = world->UIElements.begin(); it != world->UIElements.end(); ++it)
 		{
-			if ((*it)->HasBorder)
-			{
-				if ((*it)->Size.X > 0 && (*it)->Size.Y > 0)
-				{
-					//Create upper border
-					mvaddch((*it)->GetOnScreenLocation().Y, (*it)->GetOnScreenLocation().X, ACS_ULCORNER);
-
-					for (int i = 1; i < (*it)->Size.X - 1; i++)
-					{
-						mvaddch((*it)->GetOnScreenLocation().Y, (*it)->GetOnScreenLocation().X + i, '-');
-					}
-					mvaddch((*it)->GetOnScreenLocation().Y, (*it)->GetOnScreenLocation().X + (*it)->Size.X - 1, ACS_URCORNER);
-					mvprintw((*it)->GetOnScreenLocation().Y, (*it)->GetOnScreenLocation().X + 1, (*it)->DisplayName.c_str());
-
-					//create left and right border
-					for (int i = 1; i < (*it)->Size.Y; i++)
-					{
-						mvaddch((*it)->GetOnScreenLocation().Y + i, (*it)->GetOnScreenLocation().X, '|');
-						mvaddch((*it)->GetOnScreenLocation().Y + i, (*it)->GetOnScreenLocation().X + (*it)->Size.X - 1, '|');
-					}
-
-					//Create lower border
-					mvaddch((*it)->GetOnScreenLocation().Y + (*it)->Size.Y - 1, (*it)->GetOnScreenLocation().X, ACS_LLCORNER);
-
-					for (int i = 1; i < (*it)->Size.X - 1; i++)
-					{
-						mvaddch((*it)->GetOnScreenLocation().Y + (*it)->Size.Y - 1, (*it)->GetOnScreenLocation().X + i, '-');
-					}
-					mvaddch((*it)->GetOnScreenLocation().Y + (*it)->Size.Y - 1, (*it)->GetOnScreenLocation().X + (*it)->Size.X - 1, ACS_LRCORNER);
-				}
-			}
-			else
-			{
-				mvprintw((*it)->GetOnScreenLocation().Y, (*it)->GetOnScreenLocation().X, (*it)->DisplayName.c_str());
-			}
+			(*it)->ProccessInput(input);
+			(*it)->Draw();
 		}
-		input = getch();
-		if (input == 'y')
+	
+		input = wgetch(stdscr);
+		if (input == 27)
 		{
 			endwin();
 			return 0;
+		}
+		else
+		{
+			keyText->DisplayName = std::to_string(input);
 		}
 	}
 

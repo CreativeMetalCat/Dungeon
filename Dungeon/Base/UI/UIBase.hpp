@@ -33,6 +33,10 @@ namespace Engine
 
 			//List of child uis this object has. Location of children is relative to the ui object itself
 			Array<CUIBase*>ChildUI = Array<CUIBase*>();
+
+			virtual void Draw();
+
+			virtual void ProccessInput(int input) {}
 		};
 	}
 }

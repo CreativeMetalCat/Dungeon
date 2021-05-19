@@ -74,5 +74,8 @@
     <ClInclude Include="Base\Item\ItemPickup.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Base\Render\RenderMacros.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,9 +1,10 @@
-#include "Player.hpp"
+﻿#include "Player.hpp"
 #include "Base/Pawns/Pawn.hpp"
 #include "World.h"
 #include "Base/UI/UIBase.hpp"
 
 #include <string>
+#include "Base/Render/RenderMacros.h"
 
 Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame) 
 	:Engine::CPawn('@'),inventoryFrame(_inventoryFrame)
@@ -23,7 +24,7 @@ bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId
 				inventoryFrame,
 				"item",
 				std::string(item.DisplayName + " x " + std::to_string(item.CurrentAmout)),
-				Engine::Vector(1, 1 + resultId == -1 ? 0 : resultId),
+				Engine::Vector(1, 2 + resultId == -1 ? 0 : resultId),
 				Engine::Vector(0, 0), false);
 		}
 	}
@@ -31,26 +32,26 @@ bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId
 	return res;
 }
 
-void Dungeon::CPlayer::ProcessInput(char input)
+void Dungeon::CPlayer::ProcessInput(int input)
 {
 	switch (input)
 	{
-	case 'a':
+	case ACS_LARROW:case 260:
 	{
 		Move(Engine::Vector(-1, 0));
 		break;
 	}
-	case 'd':
+	case ACS_RARROW:case 261:
 	{
 		Move(Engine::Vector(1, 0));
 		break;
 	}
-	case 's':
+	case ACS_DARROW:case 258:
 	{
 		Move(Engine::Vector(0, 1));
 		break;
 	}
-	case 'w':
+	case ACS_UARROW:case 259:
 	{
 		Move(Engine::Vector(0, -1));
 		break;

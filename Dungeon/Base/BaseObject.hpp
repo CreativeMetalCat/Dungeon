@@ -16,12 +16,17 @@ namespace Engine
 	class CBaseObject
 	{
 	protected:
+		bool pendingKill = false;
+
 		char DisplayCharacter;
 	public:
+
+		bool Valid()const { return !pendingKill; }
+
 		//id is not used for anything as of now, but could be useful for debug
 		unsigned int id = 0;
 
-		CBaseObject(char displayChar = '#'):DisplayCharacter(displayChar){}
+		CBaseObject(int displayChar = '#'):DisplayCharacter(displayChar){}
 
 		//This is the name used when telling stuff to player(lfor example #DisplayName# killed player with knife)
 		String DisplayName = "Object";
@@ -41,7 +46,7 @@ namespace Engine
 
 		virtual void Update() = 0;
 
-		virtual void ProcessInput(char) {}
+		virtual void ProcessInput(int) {}
 
 		virtual void OnOverlap(CBaseObject* other) {}
 
