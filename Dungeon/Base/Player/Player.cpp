@@ -5,7 +5,8 @@
 
 #include <string>
 
-Dungeon::CPlayer::CPlayer() :Engine::CPawn('@')
+Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame) 
+	:Engine::CPawn('@'),inventoryFrame(_inventoryFrame)
 {
 	Faction = Engine::Faction::Player;
 }
@@ -19,10 +20,10 @@ bool Dungeon::CPlayer::AddItem(Item item,int &amountLeft, int& resultId)
 		if (World)
 		{
 			World->CreateUI<Engine::UI::CUIBase>(
-				nullptr,
+				inventoryFrame,
 				"item",
 				std::string(item.DisplayName + " x " + std::to_string(item.CurrentAmout)),
-				Engine::Vector(0, resultId == -1 ? 0 : resultId),
+				Engine::Vector(1, 1 + resultId == -1 ? 0 : resultId),
 				Engine::Vector(0, 0), false);
 		}
 	}

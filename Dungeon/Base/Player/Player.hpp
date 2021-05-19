@@ -9,8 +9,9 @@ namespace Dungeon
 	class CPlayer : public Engine::CPawn
 	{
 	protected:
+		Engine::UI::CUIBase* inventoryFrame = nullptr;
 	public:
-		CPlayer();
+		CPlayer(Engine::UI::CUIBase* _inventoryFrame = nullptr);
 
 		virtual bool AddItem(Item item,int &amountLeft, int& resultId)override;
 

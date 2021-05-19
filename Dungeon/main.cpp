@@ -20,11 +20,16 @@ int main()
 	using namespace Engine;
 	using namespace Dungeon;
 
+	
+
 	CWorld* world = new CWorld();
-	CPlayer* player = new CPlayer();
+
+	UI::CUIBase* ui = world->CreateUI<UI::CUIBase>();
+	ui->Size = Vector(15, 10);
+	ui->DisplayName = "Inventory";
+
+	CPlayer* player = world->SpawnObject<CPlayer>(ui);
 	player->Location = Engine::Vector(20, 9);
-	player->World = world;
-	world->Objects.push_back(player);
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -47,9 +52,7 @@ int main()
 	enemy->Location = Vector(5, 5);
 	enemy->Collision = CollisionType::Block;
 	
-	UI::CUIBase* ui = world->CreateUI<UI::CUIBase>();
-	ui->Size = Vector(15, 10);
-	ui->DisplayName = "Inventory";
+	
 
 	UI::CUIBase* ui2 = world->CreateUI<UI::CUIBase>(nullptr, "DebugUIFrame", "-Debug Info-", Vector(0, 20), Vector(15, 10), true);
 	UI::CUIBase* locText = world->CreateUI<UI::CUIBase>(ui2, "locText", "X: 0, Y: 0", Vector(1, 1), Vector(0, 0), false);
