@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+#include "Base/Render/RenderData.h"
+
 template<class T>
 using  Array = std::vector<T>;
 

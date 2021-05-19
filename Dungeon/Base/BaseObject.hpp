@@ -18,7 +18,7 @@ namespace Engine
 	protected:
 		bool pendingKill = false;
 
-		char DisplayCharacter;
+		RenderData data;
 	public:
 
 		bool Valid()const { return !pendingKill; }
@@ -26,7 +26,7 @@ namespace Engine
 		//id is not used for anything as of now, but could be useful for debug
 		unsigned int id = 0;
 
-		CBaseObject(int displayChar = '#'):DisplayCharacter(displayChar){}
+		CBaseObject(RenderData _data = RenderData()):data(_data){}
 
 		//This is the name used when telling stuff to player(lfor example #DisplayName# killed player with knife)
 		String DisplayName = "Object";
@@ -38,8 +38,6 @@ namespace Engine
 
 		Faction Faction = Faction::World;
 
-		char GetDisplayCharacter()const { return DisplayCharacter; }
-
 		CollisionType Collision = CollisionType::None;
 
 		bool Visible = true;
@@ -49,6 +47,8 @@ namespace Engine
 		virtual void ProcessInput(int) {}
 
 		virtual void OnOverlap(CBaseObject* other) {}
+
+		virtual void Draw(Vector locationOffset);
 
 		virtual void Destroy();
 	};

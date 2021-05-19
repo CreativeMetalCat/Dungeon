@@ -5,7 +5,7 @@
 Engine::CEnemyBase::CEnemyBase()
 	:CPawn('E')
 {
-	
+	data.Type = RenderData::ColorPalleteType::Enemy;
 }
 
 void Engine::CEnemyBase::Update()

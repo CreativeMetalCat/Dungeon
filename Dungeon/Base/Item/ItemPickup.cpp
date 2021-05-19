@@ -5,6 +5,7 @@
 Engine::CItemPickup::CItemPickup(Engine::Item item):CBaseObject('i'),Item(item)
 {
 	Collision = CollisionType::Overlap;
+	data.Type = RenderData::ColorPalleteType::Item;
 }
 
 void Engine::CItemPickup::Update()

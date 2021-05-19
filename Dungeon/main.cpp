@@ -20,11 +20,17 @@ int main()
 	raw();
 	noecho();
 
+	if (has_colors())
+	{
+		init_pair((int)RenderData::ColorPalleteType::Default, COLOR_WHITE, COLOR_BLACK);
+		init_pair((int)RenderData::ColorPalleteType::Enemy, COLOR_RED, COLOR_BLACK);
+		init_pair((int)RenderData::ColorPalleteType::Item, COLOR_BLUE, COLOR_BLACK);
+	}
+
 	//create world
 	using namespace Engine;
 	using namespace Dungeon;
 
-	
 
 	CWorld* world = new CWorld();
 
@@ -68,26 +74,25 @@ int main()
 	int input = getch();
 	while (true)
 	{
-		
-
 		clear();
+		
 		for (int i = 0; i < world->Objects.size(); i++) 
 		{
 			world->Objects[i]->ProcessInput(input);
 			
 		}
-		for (auto it = world->Objects.begin();it != world->Objects.end();++it)
+		for (auto it = world->Objects.begin(); it != world->Objects.end(); ++it)
 		{
 			if ((*it)->Valid())
 			{
 				(*it)->Update();
 				if ((*it) != player)
 				{
-					ADD_CHAR_AT((*it)->Location.Y + 15 - player->Location.Y, (*it)->Location.X - player->Location.X + 60, (*it)->GetDisplayCharacter());
+					(*it)->Draw(Vector((*it)->Location.X - player->Location.X + 60, (*it)->Location.Y + 15 - player->Location.Y));
 				}
 				else
 				{
-					ADD_CHAR_AT(15, 60, (*it)->GetDisplayCharacter());
+					(*it)->Draw(Vector(60,15));
 				}
 			}
 		}
@@ -109,7 +114,7 @@ int main()
 			(*it)->ProccessInput(input);
 			(*it)->Draw();
 		}
-	
+		refresh();
 		input = wgetch(stdscr);
 		if (input == 27)
 		{
