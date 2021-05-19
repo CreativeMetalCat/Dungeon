@@ -18,7 +18,7 @@ namespace Engine
 		Class* SpawnObject(Args ... args);
 
 		template<class Class, class ... Args>
-		Class* CreateUI(Args...args);
+		Class* CreateUI(UI::CUIBase* parent = nullptr,Args...args);
 	};
 
 	template<class Class, class ...Args>
@@ -40,11 +40,16 @@ namespace Engine
 		}
 	}
 	template<class Class, class ...Args>
-	inline Class* CWorld::CreateUI(Args ...args)
+	inline Class* CWorld::CreateUI(UI::CUIBase*parent, Args ...args)
 	{
 		Class* ui = new Class(args...);
 		if (ui)
 		{
+			if (parent)
+			{
+				parent->ChildUI.push_back(ui);
+				ui->Parent = parent;
+			}
 			UIElements.push_back(ui);
 			return ui;
 		}

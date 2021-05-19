@@ -12,13 +12,27 @@ namespace Engine
 			//Location relative to the screen
 			Vector onScreenLocation;
 		public:
-			Vector GetOnScreenLocation()const { return onScreenLocation; }
+
+			CUIBase(String name = "UI", String displayName= "" ,Vector location = Vector(0,0),Vector size = Vector(0, 0),bool hasBorder  = true);
+
+			String Name = "UI";
+
+			Vector GetOnScreenLocation();
 
 			void SetOnScreenLocation(Vector loc);
 
 			Vector Size;
 
 			bool HasBorder = true;
+
+			//Will be displayed if HasBorder is true written on the top of the upper border
+			String DisplayName;
+
+			//Parent of this ui -> used for calculating location
+			CUIBase* Parent = nullptr;
+
+			//List of child uis this object has. Location of children is relative to the ui object itself
+			Array<CUIBase*>ChildUI = Array<CUIBase*>();
 		};
 	}
 }

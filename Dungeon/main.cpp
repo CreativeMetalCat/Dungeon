@@ -48,11 +48,12 @@ int main()
 	enemy->Collision = CollisionType::Block;
 	
 	UI::CUIBase* ui = world->CreateUI<UI::CUIBase>();
-	ui->Size = Vector(10, 10);
+	ui->Size = Vector(15, 10);
+	ui->DisplayName = "Inventory";
 
-	UI::CUIBase* ui2 = world->CreateUI<UI::CUIBase>();
-	ui2->Size = Vector(15, 10);
-	ui2->SetOnScreenLocation(Vector(0, 20));
+	UI::CUIBase* ui2 = world->CreateUI<UI::CUIBase>(nullptr, "DebugUIFrame", "-Debug Info-", Vector(0, 20), Vector(15, 10), true);
+	UI::CUIBase* locText = world->CreateUI<UI::CUIBase>(ui2, "locText", "X: 0, Y: 0", Vector(1, 1), Vector(0, 0), false);
+
 	//update cycle
 
 	char input = getch();
@@ -76,6 +77,7 @@ int main()
 				mvaddch(15, 60, (*it)->GetDisplayCharacter());
 			}
 		}
+		locText->DisplayName = ("X: " + std::to_string(player->Location.X) + "Y: " + std::to_string(player->Location.Y)).c_str();
 
 		for (auto it = world->UIElements.begin(); it != world->UIElements.end(); ++it)
 		{
@@ -91,6 +93,7 @@ int main()
 						mvaddch((*it)->GetOnScreenLocation().Y, (*it)->GetOnScreenLocation().X + i, '-');
 					}
 					mvaddch((*it)->GetOnScreenLocation().Y, (*it)->GetOnScreenLocation().X + (*it)->Size.X - 1, ACS_URCORNER);
+					mvprintw((*it)->GetOnScreenLocation().Y, (*it)->GetOnScreenLocation().X + 1, (*it)->DisplayName.c_str());
 
 					//create left and right border
 					for (int i = 1; i < (*it)->Size.Y; i++)
@@ -109,10 +112,11 @@ int main()
 					mvaddch((*it)->GetOnScreenLocation().Y + (*it)->Size.Y - 1, (*it)->GetOnScreenLocation().X + (*it)->Size.X - 1, ACS_LRCORNER);
 				}
 			}
+			else
+			{
+				mvprintw((*it)->GetOnScreenLocation().Y, (*it)->GetOnScreenLocation().X, (*it)->DisplayName.c_str());
+			}
 		}
-
-		mvprintw(SCREEN_SIZE_Y - 8, 0,"\n Debug info: \n");
-		mvprintw(SCREEN_SIZE_Y - 5,0,("X: " + std::to_string(player->Location.X) + "Y: " + std::to_string(player->Location.Y)).c_str());
 		input = getch();
 		if (input == 'y')
 		{

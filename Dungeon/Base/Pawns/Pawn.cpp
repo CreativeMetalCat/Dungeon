@@ -6,6 +6,45 @@ Engine::CPawn::CPawn(char displayChar):Engine::CBaseObject(displayChar)
 {
 }
 
+bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId)
+{
+	amountLeft = item.CurrentAmout;
+	resultId = -1;
+	//check if can add the item
+	for (int i = 0; i < Items.size(); i++)
+	{
+		if (Items[i].name == item.name)
+		{
+			if (Items[i].MaxAmout - Items[i].CurrentAmout > 0)
+			{
+				if (amountLeft >= Items[i].MaxAmout - Items[i].CurrentAmout)
+				{
+					amountLeft = amountLeft - Items[i].MaxAmout - Items[i].CurrentAmout;
+					Items[i].CurrentAmout = Items[i].MaxAmout;
+				}
+				else
+				{
+					amountLeft = 0;
+					Items[i].CurrentAmout += amountLeft;
+					return true;
+				}
+			}
+		}
+	}
+	if (Items.size() < MaxItems)
+	{
+		resultId = Items.size() - 1;
+		Items.push_back(item);
+		amountLeft = 0;
+	}
+	return amountLeft == 0;
+}
+
+bool Engine::CPawn::RemoveItem(String name, int amount)
+{
+	return false;
+}
+
 void Engine::CPawn::MoveTo(Engine::Vector newLocation)
 {
 	if (World)
