@@ -36,6 +36,8 @@ namespace Engine
 
 			virtual void Draw();
 
+			/*Make ui process whateever key was pressed last. 
+			Note: ui should not have any effect on gameplay because it's placed in full update category at all times*/
 			virtual void ProccessInput(int input) {}
 		};
 	}

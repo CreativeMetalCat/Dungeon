@@ -9,10 +9,18 @@ namespace Engine
 	private:
 		unsigned int spawnCounter = 0;
 	public:
-		
+		int CurrenInput = -1;
+
+		//This value is set by object if there was an input that has effect on gameplay
+		//Reset after all update functions are called
+		bool GameplayUpdate = false;
+
 		Array<Engine::CBaseObject*> Objects = Array<Engine::CBaseObject*>();
 
 		Array<Engine::UI::CUIBase*>UIElements = Array<Engine::UI::CUIBase*>();
+
+		//Update UI calls ui to proccess input and them be drawn
+		void UpdateUI();
 
 		template<class Class, class ... Args>
 		Class* SpawnObject(Args ... args);

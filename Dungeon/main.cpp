@@ -75,27 +75,45 @@ int main()
 	while (true)
 	{
 		clear();
-		
+		//proccess input runs before any update
 		for (int i = 0; i < world->Objects.size(); i++) 
 		{
-			world->Objects[i]->ProcessInput(input);
-			
+			world->Objects[i]->ProcessInput(input);	
 		}
 		for (auto it = world->Objects.begin(); it != world->Objects.end(); ++it)
 		{
 			if ((*it)->Valid())
 			{
-				(*it)->Update();
+				switch ((*it)->UpdateType)
+				{
+				case EUpdateType::EventOnly:
+				{
+					if (world->GameplayUpdate)
+					{
+						(*it)->Update();
+					}
+					break;
+				}
+				case EUpdateType::Full:
+				{
+					(*it)->Update(); break;
+				}
+				default:
+					break;
+				}
+				
+				//no matter the update type draw function is always called
 				if ((*it) != player)
 				{
 					(*it)->Draw(Vector((*it)->Location.X - player->Location.X + 60, (*it)->Location.Y + 15 - player->Location.Y));
 				}
 				else
 				{
-					(*it)->Draw(Vector(60,15));
+					(*it)->Draw(Vector(SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2));
 				}
 			}
 		}
+		world->GameplayUpdate = false;
 
 		for (int i = 0;i< world->Objects.size();i++)
 		{
@@ -109,11 +127,8 @@ int main()
 
 		locText->DisplayName = ("X: " + std::to_string(player->Location.X) + "Y: " + std::to_string(player->Location.Y)).c_str();
 
-		for (auto it = world->UIElements.begin(); it != world->UIElements.end(); ++it)
-		{
-			(*it)->ProccessInput(input);
-			(*it)->Draw();
-		}
+		world->UpdateUI();
+		
 		refresh();
 		input = wgetch(stdscr);
 		if (input == 27)

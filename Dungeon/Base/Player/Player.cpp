@@ -9,7 +9,7 @@
 Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame) 
 	:Engine::CPawn('@'),inventoryFrame(_inventoryFrame)
 {
-	Faction = Engine::Faction::Player;
+	Faction = Engine::EFaction::Player;
 }
 
 bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId)
@@ -39,28 +39,30 @@ void Dungeon::CPlayer::ProcessInput(int input)
 	case ACS_LARROW:case 260:
 	{
 		Move(Engine::Vector(-1, 0));
+		World->GameplayUpdate = true;
 		break;
 	}
 	case ACS_RARROW:case 261:
 	{
 		Move(Engine::Vector(1, 0));
+		World->GameplayUpdate = true;
 		break;
 	}
 	case ACS_DARROW:case 258:
 	{
 		Move(Engine::Vector(0, 1));
+		World->GameplayUpdate = true;
 		break;
 	}
 	case ACS_UARROW:case 259:
 	{
 		Move(Engine::Vector(0, -1));
+		World->GameplayUpdate = true;
 		break;
 	}
 	case 'g':
 	{
-		int left = 0;
-		int id = 0;
-		AddItem({ "item2","not an item",12,12 }, left,id);
+		flash();
 	}
 	default:
 		break;
