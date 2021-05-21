@@ -1,6 +1,7 @@
 #pragma once
 #include "Base/BaseObject.hpp"
 #include "Base/UI/UIBase.hpp"
+#include "Base/Macros.h"
 
 namespace Engine
 {

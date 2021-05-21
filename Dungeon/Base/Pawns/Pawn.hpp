@@ -24,6 +24,10 @@ namespace Engine
 
 		int Health = 1;
 
+		int Strenght = 1;
+
+		int Defence = 1;
+
 		virtual void Die(CBaseObject* killer) {}
 
 		/*This function checks if there are any objects in that space and either doesn't move or moves and triggers their overlap event*/

@@ -19,6 +19,8 @@ namespace Dungeon
 
 		// Inherited via CPawn
 		virtual void Update() override;
+
+		int Mana = 1;
 	};
 }
 

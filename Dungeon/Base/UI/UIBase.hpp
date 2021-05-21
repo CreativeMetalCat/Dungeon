@@ -9,10 +9,12 @@ namespace Engine
 		class CUIBase
 		{
 		protected:
+			//will this element be destroyed on the next update?
+			bool pendingKill = false;
+
 			//Location relative to the screen
 			Vector onScreenLocation;
 		public:
-
 			CUIBase(String name = "UI", String displayName= "" ,Vector location = Vector(0,0),Vector size = Vector(0, 0),bool hasBorder  = true);
 
 			String Name = "UI";
@@ -23,9 +25,12 @@ namespace Engine
 
 			Vector Size;
 
+			//If true this UI element will act as a frame
+			//if false it will be closer to label
 			bool HasBorder = true;
 
 			//Will be displayed if HasBorder is true written on the top of the upper border
+			//If HasBorder is false this will be the only thing displayed
 			String DisplayName;
 
 			//Parent of this ui -> used for calculating location
@@ -37,8 +42,12 @@ namespace Engine
 			virtual void Draw();
 
 			/*Make ui process whateever key was pressed last. 
-			Note: ui should not have any effect on gameplay because it's placed in full update category at all times*/
+			Note: ui should not have any effect on gameplay because it's placed in full update category at all times
+			Note2: ProcessInput for ui is same as Update for object for the reasons stated in note 1*/
 			virtual void ProccessInput(int input) {}
+
+			virtual bool Valid()const { return !pendingKill; }
+			virtual void Destroy() { pendingKill = true; }
 		};
 	}
 }

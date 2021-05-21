@@ -45,6 +45,12 @@
     <ClCompile Include="Base\Item\ItemPickup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Base\UI\Player\CPlayerStatsUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\UI\Player\PlayerStatsUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\Types\Types.hpp">
@@ -78,6 +84,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Base\Render\RenderData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\UI\Player\PlayerStatsUI.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\Macros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

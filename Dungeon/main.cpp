@@ -11,6 +11,8 @@
 #include "Base/Item/ItemPickup.hpp"
 
 #include "Base/Render/RenderMacros.h"
+#include "Base/UI/Player/PlayerStatsUI.hpp"
+
 int main()
 {
 	//init pdcurses
@@ -68,6 +70,8 @@ int main()
 	UI::CUIBase* ui2 = world->CreateUI<UI::CUIBase>(nullptr, "DebugUIFrame", "-Debug Info-", Vector(0, 20), Vector(15, 10), true);
 	UI::CUIBase* locText = world->CreateUI<UI::CUIBase>(ui2, "locText", "X: 0, Y: 0", Vector(1, 1), Vector(0, 0), false);
 	UI::CUIBase* keyText = world->CreateUI<UI::CUIBase>(ui2, "lastKey", "none", Vector(1, 2), Vector(0, 0), false);
+
+	Dungeon::CPlayerStatsUI* statsUI = world->CreateUI<Dungeon::CPlayerStatsUI>(nullptr, player, "stats", "-Stats-", Vector(20, 20), Vector(20, 10));
 
 	//update cycle
 

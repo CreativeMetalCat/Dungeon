@@ -59,3 +59,4 @@ namespace Engine
 	};
 }
 
+using Vector = Engine::Vector;
