@@ -11,7 +11,9 @@ public:
 		//Red on black
 		Enemy = 2,
 		//Blue on black
-		Item = 3
+		Item = 3,
+		//Black on white
+		Selected = 4
 	};
 	ColorPalleteType Type = ColorPalleteType::Default;
 

@@ -1,12 +1,14 @@
 #include "EnemyBase.hpp"
 #include "World.h"
-
+#include "Base/Item/ItemPickup.hpp"
 
 Engine::CEnemyBase::CEnemyBase()
 	:CPawn('E')
 {
 	data.Type = RenderData::ColorPalleteType::Enemy;
+	defaultColorPallet = RenderData::ColorPalleteType::Enemy;
 	UpdateType = EUpdateType::EventOnly;
+	Faction = EFaction::EnemyOfAll;
 }
 
 void Engine::CEnemyBase::Update()
@@ -42,4 +44,12 @@ void Engine::CEnemyBase::Attack(CBaseObject* victim)
 	{
 		pawn->ReceiveDamage(1, this);
 	}
+}
+
+void Engine::CEnemyBase::Die(CBaseObject* killer)
+{
+	Engine::CItemPickup * pickup = World->SpawnObject<Engine::CItemPickup>(Item("itemio", "Trash", 10, 5));
+	pickup->Location = Location;
+	World->AddDebugMessage(Name + " died by the hands of " + killer->Name);
+	Destroy();
 }

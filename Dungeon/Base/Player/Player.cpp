@@ -10,6 +10,7 @@ Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
 	:Engine::CPawn('@'),inventoryFrame(_inventoryFrame)
 {
 	Faction = Engine::EFaction::Player;
+	UpdateType = Engine::EUpdateType::EventOnly;
 	Health = 10;
 }
 
@@ -37,27 +38,37 @@ void Dungeon::CPlayer::ProcessInput(int input)
 {
 	switch (input)
 	{
-	case ACS_LARROW:case 260:
+	case KEY_LEFT:
 	{
 		Move(Engine::Vector(-1, 0));
 		World->GameplayUpdate = true;
 		break;
 	}
-	case ACS_RARROW:case 261:
+	case KEY_RIGHT:
 	{
 		Move(Engine::Vector(1, 0));
 		World->GameplayUpdate = true;
 		break;
 	}
-	case ACS_DARROW:case 258:
+	case KEY_DOWN:
 	{
 		Move(Engine::Vector(0, 1));
 		World->GameplayUpdate = true;
 		break;
 	}
-	case ACS_UARROW:case 259:
+	case KEY_UP:
 	{
 		Move(Engine::Vector(0, -1));
+		World->GameplayUpdate = true;
+		break;
+	}
+	case ' ':
+	{
+		if (target)
+		{
+			target->ReceiveDamage(1, this);
+			flash();
+		}
 		World->GameplayUpdate = true;
 		break;
 	}
@@ -72,4 +83,36 @@ void Dungeon::CPlayer::ProcessInput(int input)
 
 void Dungeon::CPlayer::Update()
 {
+	//find enemies in range and select the first one
+	Array<CBaseObject*>::iterator it = std::find_if(World->Objects.begin(), World->Objects.end(),
+		[this](CBaseObject* obj)
+		{
+			return
+				obj->Location.Distance(Location) <= 2/*Range will be defined by player's weapon ,but will rarely go above 4*/
+				&& obj != this
+				&& obj->Faction == Engine::EFaction::EnemyOfAll;
+		}
+	);
+	if (it != World->Objects.end() && (*it) != target)
+	{
+		if (target)
+		{
+			target->SetSelected(false);
+		}
+		//World objects MUST never have faction of "EnemyOfAll"
+		target = static_cast<Engine::CPawn*>(*it);
+		target->SetSelected(true);
+	}
+	else if (it == World->Objects.end())
+	{
+		if (target && target->Valid())
+		{
+			target->SetSelected(false);
+			target = nullptr;
+		}
+		else
+		{
+			target = nullptr;
+		}
+	}
 }

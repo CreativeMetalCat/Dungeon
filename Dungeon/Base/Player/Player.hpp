@@ -10,6 +10,9 @@ namespace Dungeon
 	{
 	protected:
 		Engine::UI::CUIBase* inventoryFrame = nullptr;
+
+		//Who is going to be attacked next
+		CPawn* target = nullptr;
 	public:
 		CPlayer(Engine::UI::CUIBase* _inventoryFrame = nullptr);
 

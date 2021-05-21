@@ -13,6 +13,10 @@ namespace Engine
 		Array<Item>Items = Array<Item>();
 
 		Array<Engine::UI::CUIBase*> inventoryItemsUI = Array<Engine::UI::CUIBase*>();
+
+		bool selected = false;
+
+		RenderData::ColorPalleteType defaultColorPallet;
 	public:
 		CPawn(char displayChar = 'P');
 
@@ -39,6 +43,8 @@ namespace Engine
 
 		// Inherited via CBaseObject
 		virtual void Update() override;
+
+		virtual void SetSelected(bool _selected);
 	};
 }
 

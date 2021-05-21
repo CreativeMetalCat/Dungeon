@@ -32,13 +32,14 @@ namespace Engine
 
 		RenderData data;
 	public:
+		String Name = "CBaseObject";
 
 		bool Valid()const { return !pendingKill; }
 
 		//id is not used for anything as of now, but could be useful for debug
 		unsigned int id = 0;
 
-		CBaseObject(RenderData _data = RenderData()):data(_data){}
+		CBaseObject(RenderData _data = RenderData(), String name = "CBaseObject"):data(_data),Name(name){}
 
 		//This is the name used when telling stuff to player(lfor example #DisplayName# killed player with knife)
 		String DisplayName = "Object";

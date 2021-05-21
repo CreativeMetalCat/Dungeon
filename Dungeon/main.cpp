@@ -27,6 +27,7 @@ int main()
 		init_pair((int)RenderData::ColorPalleteType::Default, COLOR_WHITE, COLOR_BLACK);
 		init_pair((int)RenderData::ColorPalleteType::Enemy, COLOR_RED, COLOR_BLACK);
 		init_pair((int)RenderData::ColorPalleteType::Item, COLOR_BLUE, COLOR_BLACK);
+		init_pair((int)RenderData::ColorPalleteType::Selected, COLOR_BLACK, COLOR_WHITE);
 	}
 
 	//create world
@@ -145,6 +146,7 @@ int main()
 		world->CurrenInput = wgetch(stdscr);
 		if (world->CurrenInput == 27/*esc key*/)
 		{
+			
 			endwin();
 			return 0;
 		}

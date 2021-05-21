@@ -119,3 +119,9 @@ void Engine::CPawn::Move(Engine::Vector direction)
 void Engine::CPawn::Update()
 {
 }
+
+void Engine::CPawn::SetSelected(bool _selected)
+{
+	selected = _selected;
+	data.Type = selected ? RenderData::ColorPalleteType::Selected : defaultColorPallet;
+}
