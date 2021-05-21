@@ -10,6 +10,7 @@ Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
 	:Engine::CPawn('@'),inventoryFrame(_inventoryFrame)
 {
 	Faction = Engine::EFaction::Player;
+	Health = 10;
 }
 
 bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId)

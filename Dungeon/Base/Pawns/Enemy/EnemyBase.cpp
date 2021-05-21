@@ -35,3 +35,11 @@ void Engine::CEnemyBase::Update()
 		this->World->AddDebugMessage(vec.ToString());
 	}
 }
+
+void Engine::CEnemyBase::Attack(CBaseObject* victim)
+{
+	if (CPawn* pawn = dynamic_cast<CPawn*>(victim))
+	{
+		pawn->ReceiveDamage(1, this);
+	}
+}

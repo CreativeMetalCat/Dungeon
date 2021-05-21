@@ -83,14 +83,14 @@ int main()
 
 	//update cycle
 
-	int input = getch();
+	world->CurrenInput = wgetch(stdscr);
 	while (true)
 	{
 		clear();
 		//proccess input runs before any update
 		for (int i = 0; i < world->Objects.size(); i++) 
 		{
-			world->Objects[i]->ProcessInput(input);	
+			world->Objects[i]->ProcessInput(world->CurrenInput);
 		}
 		for (auto it = world->Objects.begin(); it != world->Objects.end(); ++it)
 		{
@@ -142,15 +142,15 @@ int main()
 		world->UpdateUI();
 		
 		refresh();
-		input = wgetch(stdscr);
-		if (input == 27)
+		world->CurrenInput = wgetch(stdscr);
+		if (world->CurrenInput == 27/*esc key*/)
 		{
 			endwin();
 			return 0;
 		}
 		else
 		{
-			world->AddDebugMessage(std::to_string(input));
+			world->AddDebugMessage(std::to_string(world->CurrenInput));
 		}
 	}
 

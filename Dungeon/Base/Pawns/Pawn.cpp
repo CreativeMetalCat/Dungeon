@@ -4,6 +4,7 @@
 
 Engine::CPawn::CPawn(char displayChar):Engine::CBaseObject(displayChar)
 {
+	Faction = EFaction::World;
 }
 
 bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId)
@@ -45,6 +46,13 @@ bool Engine::CPawn::RemoveItem(String name, int amount)
 	return false;
 }
 
+int Engine::CPawn::ReceiveDamage(int damage, CPawn* damager)
+{
+	Health -= (damage - Defence) < 0 ? 0 : (damage - Defence);
+	if (Health <= 0) { Die(damager); }
+	return (damage - Defence);
+}
+
 void Engine::CPawn::MoveTo(Engine::Vector newLocation)
 {
 	if (World)
@@ -82,7 +90,9 @@ void Engine::CPawn::Move(Engine::Vector direction)
 		Vector dir = direction.Normalise();
 		//do a very basic for loop to find if there are objects in that spot
 
-		Array<CBaseObject*>::iterator it = std::find_if(World->Objects.begin(), World->Objects.end(), [this, dir](Engine::CBaseObject* obj) {return obj->Location == Location + dir; });
+		Array<CBaseObject*>::iterator it = std::find_if(World->Objects.begin(), World->Objects.end(), [this, dir](Engine::CBaseObject* obj) {
+			return obj->Location == Location + dir; 
+			});
 		if (it != World->Objects.end())
 		{
 			if ((*it)->Collision == CollisionType::Overlap)

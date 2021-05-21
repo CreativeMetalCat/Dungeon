@@ -11,7 +11,7 @@ namespace Engine
 
 		virtual void Update()override;
 
-		virtual void Attack(CBaseObject* victim) {}
+		virtual void Attack(CBaseObject* victim);
 	};
 }
 

@@ -26,9 +26,11 @@ namespace Engine
 
 		int Strenght = 1;
 
-		int Defence = 1;
+		int Defence = 0;
 
 		virtual void Die(CBaseObject* killer) {}
+
+		virtual int ReceiveDamage(int Damage, CPawn* damager);
 
 		/*This function checks if there are any objects in that space and either doesn't move or moves and triggers their overlap event*/
 		void MoveTo(Vector newLocation);
