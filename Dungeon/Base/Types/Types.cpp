@@ -25,7 +25,7 @@ int Engine::Vector::DistanceSquared(Vector a)
 
 Engine::Vector Engine::Vector::Normalise()
 {
-	return *this / this->Lenght();
+	return this->Lenght() != 0 ? (*this / this->Lenght()) : Vector(0, 0);
 }
 
 int Engine::Vector::Lenght()

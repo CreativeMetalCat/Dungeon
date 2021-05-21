@@ -6,6 +6,8 @@
 #include <iostream>
 
 #include "Base/Render/RenderData.h"
+#include <string>
+#include "Base/Macros.h"
 
 template<class T>
 using  Array = std::vector<T>;
@@ -56,6 +58,8 @@ namespace Engine
 		Vector Normalise();
 
 		int Lenght();
+
+		String ToString() { return "X: " + STRING(X) + " Y: " + STRING(Y); }
 	};
 }
 

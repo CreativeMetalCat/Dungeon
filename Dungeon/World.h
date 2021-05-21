@@ -9,8 +9,16 @@ namespace Engine
 	{
 	private:
 		unsigned int spawnCounter = 0;
+
+		//Array of debug messages that will be printed out when update is called
+		//Cleared after each print out
+		Array<String>debugOutputMessages = Array<String>();
 	public:
 		int CurrenInput = -1;
+
+		int MaxDebugMessageCount = -1;
+
+		UI::CUIBase* DebugOutput = nullptr;
 
 		//This value is set by object if there was an input that has effect on gameplay
 		//Reset after all update functions are called
@@ -19,6 +27,8 @@ namespace Engine
 		Array<Engine::CBaseObject*> Objects = Array<Engine::CBaseObject*>();
 
 		Array<Engine::UI::CUIBase*>UIElements = Array<Engine::UI::CUIBase*>();
+
+		void AddDebugMessage(String msg);
 
 		//Update UI calls ui to proccess input and them be drawn
 		void UpdateUI();

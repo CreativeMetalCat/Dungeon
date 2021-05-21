@@ -50,6 +50,16 @@ int main()
 		obj->Collision = CollisionType::Block;
 		obj->Location.Y = i;
 		obj->Location.X = 0;
+		if (i == 0 || i == 9)
+		{
+			for (int u = 1; u < 10; u++)
+			{
+				CPawn* objt = world->SpawnObject<CPawn>('#');
+				objt->Collision = CollisionType::Block;
+				objt->Location.Y = i;
+				objt->Location.X = u;
+			}
+		}
 
 		if (i != 5)
 		{
@@ -67,9 +77,7 @@ int main()
 	CItemPickup* item = world->SpawnObject<CItemPickup>(Item("itemio","Trash",10,5 ));
 	item->Location = Vector(5, 6);
 
-	UI::CUIBase* ui2 = world->CreateUI<UI::CUIBase>(nullptr, "DebugUIFrame", "-Debug Info-", Vector(0, 20), Vector(15, 10), true);
-	UI::CUIBase* locText = world->CreateUI<UI::CUIBase>(ui2, "locText", "X: 0, Y: 0", Vector(1, 1), Vector(0, 0), false);
-	UI::CUIBase* keyText = world->CreateUI<UI::CUIBase>(ui2, "lastKey", "none", Vector(1, 2), Vector(0, 0), false);
+	world->DebugOutput = world->CreateUI<UI::CUIBase>(nullptr, "DebugUIFrame", "-Debug Info-", Vector(0, 20), Vector(15, 10), true);
 
 	Dungeon::CPlayerStatsUI* statsUI = world->CreateUI<Dungeon::CPlayerStatsUI>(nullptr, player, "stats", "-Stats-", Vector(20, 20), Vector(20, 10));
 
@@ -129,7 +137,7 @@ int main()
 			
 		}
 
-		locText->DisplayName = ("X: " + std::to_string(player->Location.X) + "Y: " + std::to_string(player->Location.Y)).c_str();
+		world->AddDebugMessage("X: " + std::to_string(player->Location.X) + "Y: " + std::to_string(player->Location.Y));
 
 		world->UpdateUI();
 		
@@ -142,7 +150,7 @@ int main()
 		}
 		else
 		{
-			keyText->DisplayName = std::to_string(input);
+			world->AddDebugMessage(std::to_string(input));
 		}
 	}
 
