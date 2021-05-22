@@ -1,0 +1,29 @@
+{
+    "entities":
+    [
+        {
+            "name":"example",
+            "enemy":true,
+            "type":0,
+            "health":1,
+            "damage":1,
+            "defence":0,
+            "color_pair_id":1,
+            "money_drop_min":1,
+            "money_drop_max":100,
+            "items":[]
+        },
+        {
+            "name":"example2",
+            "enemy":true,
+            "type":1,
+            "health":1,
+            "damage":2,
+            "defence":0,
+            "color_pair_id":1,
+            "money_drop_min":1,
+            "money_drop_max":10,
+            "items":[{"name":"trash","amout":1}]
+        }
+    ]
+}
