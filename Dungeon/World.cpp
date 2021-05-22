@@ -1,5 +1,16 @@
 #include "World.h"
 
+#include "JSON/json.hpp"
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+Engine::CWorld::CWorld()
+{
+	if (!LoadEntityFile()) { quick_exit(5); }
+}
+
 void Engine::CWorld::AddDebugMessage(String msg)
 {
 	if (MaxDebugMessageCount == -1 || debugOutputMessages.size() < MaxDebugMessageCount)
@@ -27,5 +38,30 @@ void Engine::CWorld::UpdateUI()
 			DebugOutput->DisplayName += debugOutputMessages[i] + "\n";
 		}
 		debugOutputMessages.clear();
+	}
+}
+
+bool Engine::CWorld::LoadEntityFile()
+{
+	std::ifstream assetStream("Assets/Entities.dat", std::ios::in);
+	if (assetStream.is_open())
+	{
+		std::stringstream sstr;
+		sstr << assetStream.rdbuf();
+		entityFileText = sstr.str();
+		assetStream.close();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (entityFileText == "")
+	{
+		return false;
+	}
+	else
+	{
+		return true;
 	}
 }

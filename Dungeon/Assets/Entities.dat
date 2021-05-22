@@ -9,8 +9,8 @@
             "health": 4,
             "items": [
             ],
-            "money_drop_max": 100,
-            "money_drop_min": 1,
+            "money_drop_max": 1,
+            "money_drop_min": 100,
             "name": "exampleff",
             "type": 0
         },
@@ -23,8 +23,8 @@
             "health": 1,
             "items": [
             ],
-            "money_drop_max": 10,
-            "money_drop_min": 1,
+            "money_drop_max": 1,
+            "money_drop_min": 10,
             "name": "example2",
             "type": 0
         },
@@ -32,21 +32,7 @@
             "color_pair_id": 0,
             "damage": 0,
             "defence": 0,
-            "displayName": "item0",
-            "enemy": false,
-            "health": 0,
-            "items": [
-            ],
-            "money_drop_max": 0,
-            "money_drop_min": 0,
-            "name": "item0",
-            "type": 0
-        },
-        {
-            "color_pair_id": 0,
-            "damage": 0,
-            "defence": 0,
-            "displayName": "item0",
+            "displayName": "",
             "enemy": false,
             "health": 0,
             "items": [

@@ -92,5 +92,8 @@
     <ClInclude Include="Base\Macros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="JSON\json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

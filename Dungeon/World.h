@@ -3,6 +3,7 @@
 #include "Base/UI/UIBase.hpp"
 #include "Base/Macros.h"
 
+
 namespace Engine
 {
 	class CWorld
@@ -13,7 +14,12 @@ namespace Engine
 		//Array of debug messages that will be printed out when update is called
 		//Cleared after each print out
 		Array<String>debugOutputMessages = Array<String>();
+	protected:
+		//File will be loaded into the memory in the start of the game and then data will be read from here
+		String entityFileText;
 	public:
+		CWorld();
+
 		int CurrenInput = -1;
 
 		int MaxDebugMessageCount = -1;
@@ -32,6 +38,8 @@ namespace Engine
 
 		//Update UI calls ui to proccess input and them be drawn
 		void UpdateUI();
+
+		bool LoadEntityFile();
 
 		template<class Class, class ... Args>
 		Class* SpawnObject(Args ... args);

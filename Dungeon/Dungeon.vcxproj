@@ -169,6 +169,7 @@
     <ClInclude Include="Base\Item\Item.hpp" />
     <ClInclude Include="Base\Item\ItemPickup.hpp" />
     <ClInclude Include="Base\UI\Player\PlayerStatsUI.hpp" />
+    <ClInclude Include="JSON\json.hpp" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
