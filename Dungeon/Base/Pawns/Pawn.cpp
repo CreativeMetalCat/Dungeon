@@ -83,7 +83,7 @@ void Engine::CPawn::MoveTo(Engine::Vector newLocation)
 	}
 }
 
-void Engine::CPawn::Move(Engine::Vector direction)
+bool Engine::CPawn::Move(Engine::Vector direction)
 {
 	if (World)
 	{
@@ -102,18 +102,22 @@ void Engine::CPawn::Move(Engine::Vector direction)
 			else if ((*it)->Collision == CollisionType::Block)
 			{
 				//we could not move so we stayed in place
+				return false;
 			}
 			else
 			{
 				Location = Location + dir;
+				return true;
 			}
 		}
 		else
 		{
 			//move pawn and stay happy
 			Location = Location + dir;
+			return true;
 		}
 	}
+	return false;
 }
 
 void Engine::CPawn::Update()
