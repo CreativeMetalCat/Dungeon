@@ -41,6 +41,12 @@ namespace Engine
 
 		bool LoadEntityFile();
 
+		void ProccessInput();
+
+		void KillActorsMarkedForDelete();
+
+		void Update();
+
 		template<class Class, class ... Args>
 		Class* SpawnObject(Args ... args);
 

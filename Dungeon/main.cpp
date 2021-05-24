@@ -88,11 +88,7 @@ int main()
 	while (true)
 	{
 		clear();
-		//proccess input runs before any update
-		for (int i = 0; i < world->Objects.size(); i++) 
-		{
-			world->Objects[i]->ProcessInput(world->CurrenInput);
-		}
+		world->ProccessInput();
 		for (auto it = world->Objects.begin(); it != world->Objects.end(); ++it)
 		{
 			if ((*it)->Valid())
@@ -128,15 +124,7 @@ int main()
 		}
 		world->GameplayUpdate = false;
 
-		for (int i = 0;i< world->Objects.size();i++)
-		{
-			if (!world->Objects[i]->Valid())
-			{
-				delete (world->Objects[i]);
-				world->Objects.erase(world->Objects.begin() + i);
-			}
-			
-		}
+		world->KillActorsMarkedForDelete();
 
 		world->AddDebugMessage("X: " + std::to_string(player->Location.X) + "Y: " + std::to_string(player->Location.Y));
 

@@ -65,3 +65,29 @@ bool Engine::CWorld::LoadEntityFile()
 		return true;
 	}
 }
+
+void Engine::CWorld::ProccessInput()
+{
+	//proccess input runs before any update
+	for (int i = 0; i < Objects.size(); i++)
+	{
+		Objects[i]->ProcessInput(CurrenInput);
+	}
+}
+
+void Engine::CWorld::KillActorsMarkedForDelete()
+{
+	for (int i = 0; i < Objects.size(); i++)
+	{
+		if (!Objects[i]->Valid())
+		{
+			delete (Objects[i]);
+			Objects.erase(Objects.begin() + i);
+		}
+	}
+}
+
+void Engine::CWorld::Update()
+{
+
+}
