@@ -88,7 +88,7 @@ int main()
 	while (true)
 	{
 		clear();
-		world->ProccessInput();
+		world->ProcessInput();
 		for (auto it = world->Objects.begin(); it != world->Objects.end(); ++it)
 		{
 			if ((*it)->Valid())

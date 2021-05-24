@@ -66,7 +66,7 @@ bool Engine::CWorld::LoadEntityFile()
 	}
 }
 
-void Engine::CWorld::ProccessInput()
+void Engine::CWorld::ProcessInput()
 {
 	//proccess input runs before any update
 	for (int i = 0; i < Objects.size(); i++)

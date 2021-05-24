@@ -39,10 +39,13 @@ namespace Engine
 		//Update UI calls ui to proccess input and them be drawn
 		void UpdateUI();
 
+		//Loads entity file into the memory for future access
 		bool LoadEntityFile();
 
-		void ProccessInput();
+		//Call process input functions in objects
+		void ProcessInput();
 
+		//This function removes actors who's Valid check returns false
 		void KillActorsMarkedForDelete();
 
 		void Update();
