@@ -148,8 +148,8 @@
     <ClCompile Include="Base\Pawns\Enemy\EnemyBase.cpp" />
     <ClCompile Include="Base\Item\Item.cpp" />
     <ClCompile Include="Base\Item\ItemPickup.cpp" />
-    <ClCompile Include="Base\UI\Player\CPlayerStatsUI.cpp" />
     <ClCompile Include="Base\UI\Player\PlayerStatsUI.cpp" />
+    <ClCompile Include="Base\UI\Player\InventoryUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Base\Pawns\Pawn.cpp" />
     <ClCompile Include="Base\Player\Player.cpp" />
@@ -169,6 +169,7 @@
     <ClInclude Include="Base\Item\Item.hpp" />
     <ClInclude Include="Base\Item\ItemPickup.hpp" />
     <ClInclude Include="Base\UI\Player\PlayerStatsUI.hpp" />
+    <ClInclude Include="Base\UI\Player\InventoryUI.hpp" />
     <ClInclude Include="JSON\json.hpp" />
     <ClInclude Include="World.h" />
   </ItemGroup>

@@ -12,6 +12,13 @@
 template<class T>
 using  Array = std::vector<T>;
 
+#ifndef valid_index
+//This macro is used as any Array function
+//Example array_obj.valid_index(9) 
+#define valid_index(ind) size() > ind && ind > -1
+#endif // !valid_index
+
+
 template<class T>
 using  List = std::list<T>;
 

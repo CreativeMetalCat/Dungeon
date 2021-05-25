@@ -12,6 +12,7 @@
 
 #include "Base/Render/RenderMacros.h"
 #include "Base/UI/Player/PlayerStatsUI.hpp"
+#include "Base/UI/Player/InventoryUI.hpp"
 
 int main()
 {
@@ -37,11 +38,11 @@ int main()
 
 	CWorld* world = new CWorld();
 
-	UI::CUIBase* ui = world->CreateUI<UI::CUIBase>();
-	ui->Size = Vector(15, 10);
-	ui->DisplayName = "Inventory";
+	Dungeon::CInventoryUI* invUi = world->CreateUI<Dungeon::CInventoryUI>();
+	invUi->Size = Vector(15, 10);
+	invUi->DisplayName = "Inventory";
 
-	CPlayer* player = world->SpawnObject<CPlayer>(ui);
+	CPlayer* player = world->SpawnObject<CPlayer>(invUi);
 	player->Location = Engine::Vector(20, 9);
 
 	for (int i = 0; i < 10; i++)
@@ -75,7 +76,7 @@ int main()
 	enemy->Location = Vector(5, 5);
 	enemy->Collision = CollisionType::Block;
 	
-	CItemPickup* item = world->SpawnObject<CItemPickup>(Item("itemio","Trash",10,5 ));
+	CItemPickup* item = world->SpawnObject<CItemPickup>(Item("itemioooo","TrashierTarsh",10,5 ));
 	item->Location = Vector(5, 6);
 
 	world->DebugOutput = world->CreateUI<UI::CUIBase>(nullptr, "DebugUIFrame", "-Debug Info-", Vector(0, 20), Vector(15, 10), true);

@@ -14,8 +14,16 @@ namespace Engine
 
 			//Location relative to the screen
 			Vector onScreenLocation;
+
+			bool selected = false;
 		public:
 			CUIBase(String name = "UI", String displayName= "" ,Vector location = Vector(0,0),Vector size = Vector(0, 0),bool hasBorder  = true);
+
+			//Colors to use when ui object is not marked as selected
+			RenderData::ColorPalleteType DefaultColors = RenderData::ColorPalleteType::Default;
+
+			//Colors to use when ui object is marked as selected
+			RenderData::ColorPalleteType SelectedColors = RenderData::ColorPalleteType::Selected;
 
 			String Name = "UI";
 
@@ -37,14 +45,17 @@ namespace Engine
 			CUIBase* Parent = nullptr;
 
 			//List of child uis this object has. Location of children is relative to the ui object itself
-			Array<CUIBase*>ChildUI = Array<CUIBase*>();
+			Array<CUIBase*>ChildrenUI = Array<CUIBase*>();
 
 			virtual void Draw();
 
 			/*Make ui process whateever key was pressed last. 
 			Note: ui should not have any effect on gameplay because it's placed in full update category at all times
 			Note2: ProcessInput for ui is same as Update for object for the reasons stated in note 1*/
-			virtual void ProccessInput(int input) {}
+			virtual void ProcessInput(int input) {}
+
+			//This function changes style(colors) from default to selected 
+			virtual void ChangeState(bool selected);
 
 			virtual bool Valid()const { return !pendingKill; }
 			virtual void Destroy() { pendingKill = true; }

@@ -21,7 +21,7 @@ namespace Dungeon
 		CPlayer* Player = nullptr;
 
 		//Update Stats
-		virtual void ProccessInput(int)override;
+		virtual void ProcessInput(int)override;
 
 		virtual bool Valid()const override;
 	};

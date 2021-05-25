@@ -83,7 +83,7 @@ namespace Engine
 		{
 			if (parent)
 			{
-				parent->ChildUI.push_back(ui);
+				parent->ChildrenUI.push_back(ui);
 				ui->Parent = parent;
 			}
 			UIElements.push_back(ui);

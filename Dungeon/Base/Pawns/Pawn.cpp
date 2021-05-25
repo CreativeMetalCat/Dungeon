@@ -34,7 +34,7 @@ bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId)
 	}
 	if (Items.size() < MaxItems)
 	{
-		resultId = Items.size() - 1;
+		resultId = Items.size();
 		Items.push_back(item);
 		amountLeft = 0;
 	}

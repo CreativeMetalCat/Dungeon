@@ -15,7 +15,7 @@ Dungeon::CPlayerStatsUI::CPlayerStatsUI(Dungeon::CPlayer* player, String name, S
 	}
 }
 
-void Dungeon::CPlayerStatsUI::ProccessInput(int)
+void Dungeon::CPlayerStatsUI::ProcessInput(int)
 {
 	healthText->DisplayName = "Health: " + STRING(Player->Health);
 

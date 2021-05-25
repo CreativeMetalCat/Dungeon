@@ -36,7 +36,7 @@ void Engine::UI::CUIBase::Draw()
 			}
 
 			ADD_CHAR_AT(this->GetOnScreenLocation().Y, this->GetOnScreenLocation().X + this->Size.X - 1, ACS_URCORNER);
-			mvprintw(this->GetOnScreenLocation().Y, this->GetOnScreenLocation().X + 1, this->DisplayName.c_str());
+			PRINT_AT_W(this->GetOnScreenLocation().Y, this->GetOnScreenLocation().X + 1, this->DisplayName.c_str());
 
 			//create left and right border
 			for (int i = 1; i < this->Size.Y; i++)
@@ -57,6 +57,13 @@ void Engine::UI::CUIBase::Draw()
 	}
 	else
 	{
+		attron(COLOR_PAIR((int)selected ? SelectedColors : DefaultColors));
 		PRINT_AT_W(this->GetOnScreenLocation().Y, this->GetOnScreenLocation().X, this->DisplayName.c_str());
+		attroff(COLOR_PAIR((int)selected ? SelectedColors : DefaultColors));
 	}
+}
+
+void Engine::UI::CUIBase::ChangeState(bool sel)
+{
+	selected = sel;
 }

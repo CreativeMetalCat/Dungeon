@@ -25,7 +25,7 @@ void Engine::CWorld::UpdateUI()
 	{
 		if (CurrenInput != -1)
 		{
-			(*it)->ProccessInput(CurrenInput);
+			(*it)->ProcessInput(CurrenInput);
 		}
 		(*it)->Draw();
 	}

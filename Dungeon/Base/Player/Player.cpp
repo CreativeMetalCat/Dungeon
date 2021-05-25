@@ -24,9 +24,9 @@ bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId
 		{
 			World->CreateUI<Engine::UI::CUIBase>(
 				inventoryFrame,
-				"item",
+				item.name + "_ui",
 				std::string(item.DisplayName + " x " + std::to_string(item.CurrentAmout)),
-				Engine::Vector(1, 2 + resultId == -1 ? 0 : resultId),
+				Engine::Vector(1, 1 + (resultId == -1 ? 0 : resultId)),
 				Engine::Vector(0, 0), false);
 		}
 	}
