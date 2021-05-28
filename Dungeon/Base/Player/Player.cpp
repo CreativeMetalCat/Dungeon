@@ -11,7 +11,7 @@ Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
 {
 	Faction = Engine::EFaction::Player;
 	UpdateType = Engine::EUpdateType::EventOnly;
-	Health = 10;
+	Health = 1;
 }
 
 bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId, bool auto_eqiup)
@@ -83,6 +83,8 @@ void Dungeon::CPlayer::ProcessInput(int input)
 
 void Dungeon::CPlayer::Update()
 {
+	CPawn::Update();
+
 	//find enemies in range and select the first one
 	Array<CBaseObject*>::iterator it = std::find_if(World->Objects.begin(), World->Objects.end(),
 		[this](CBaseObject* obj)

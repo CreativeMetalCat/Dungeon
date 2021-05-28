@@ -1,5 +1,5 @@
 #include "Pawn.hpp"
-#include "..\..\World.h"
+#include "World.h"
 
 
 Engine::CPawn::CPawn(char displayChar):Engine::CBaseObject(displayChar)
@@ -85,42 +85,37 @@ void Engine::CPawn::ConsumeItem(int id)
 	{
 		for (auto it = Items[id].Effects.begin(); it != Items[id].Effects.end(); ++it)
 		{
-			switch ((*it).key)
+			switch ((*it).Key)
 			{
 			case Engine::Item::EEffectType::Damage:
 			{
 				//by default it's "-" so that it would be easier to tell that "-" in the file is meant to be the addition
-				Strenght -= (*it).value;
+				Strenght -= (*it).Value;
 				break;
 			}
-			case  Engine::Item::EEffectType::Damage_Lasting:case  Engine::Item::EEffectType::Health_Lasting:
+			/*these are !explicitly! lasting effects*/
+			case  Engine::Item::EEffectType::Damage_Lasting:case  Engine::Item::EEffectType::Health_Lasting:case  Engine::Item::EEffectType::Luck:
 			{
-				effects.push_back({ (*it).key,(*it).value,5 });
+				effects.push_back({ (*it).Key/*type*/,(*it).Value/*amount*/,5/*turn count -> because it's a simple project all item's lasting effect only last for 5 turns*/ });
 				break;
 			}
 			case  Engine::Item::EEffectType::Health:
 			{
 				//Because health is health reduction of health is damage
-				if ((*it).value < 0)
+				if ((*it).Value < 0)
 				{
-					ReceiveDamage((*it).value, this);
+					ReceiveDamage((*it).Value, this);
 				}
 				else
 				{
-					Health += (*it).value;
+					Health += (*it).Value;
 				}
 				break;
 			}
 			case  Engine::Item::EEffectType::Health_Max:
 			{
 				//by default it's "+" so that it would be easier to tell that "-" in the file is meant to be the subtraction
-				MaxHealth += (*it).value;
-				break;
-			}
-			case  Engine::Item::EEffectType::Luck:
-			{
-				//there is no such thing as luck
-				//...at least for now
+				MaxHealth += (*it).Value;
 				break;
 			}
 			default:
@@ -233,6 +228,53 @@ bool Engine::CPawn::Move(Engine::Vector direction)
 
 void Engine::CPawn::Update()
 {
+
+	if (!effects.empty())
+	{
+		/*Effects are applied in reverse order, so that if effect is over it could be immediatly removed*/
+		for (int i = effects.size() - 1; i > -1; --i)
+		{
+			/*Both damage and luck function similarly -> they don't constantly add Values, but rather add them once and then remove once time is over*/
+			switch (effects[i].Type)
+			{
+			case  Engine::Item::EEffectType::Damage_Lasting:
+			{
+				if (effects[i].Turns == 5)
+				{
+					Strenght += effects[i].Amount;
+				}
+				else if (effects[i].Turns == 1)
+				{
+					Strenght -= effects[i].Amount;
+				}
+				break;
+			}
+			case  Engine::Item::EEffectType::Health_Lasting:
+			{
+				Health += effects[i].Amount;
+				if (Health > MaxHealth) Health = MaxHealth;
+				break;
+			}
+			case  Engine::Item::EEffectType::Luck:
+			{
+				/*no luck here pal*/
+				break;
+			}
+			default:
+				break;
+			}
+
+			if (effects[i].Turns == 1)
+			{
+				//remove the effect
+				effects.erase(effects.begin() + i);
+			}
+			else
+			{
+				effects[i].Turns--;
+			}
+		}
+	}
 }
 
 void Engine::CPawn::SetSelected(bool _selected)

@@ -67,6 +67,10 @@ void Dungeon::CInventoryUI::ProcessInput(int input)
 				{
 					owningPlayer->EquipItem(currentSelection);
 				}
+				if (item.ItemType == Engine::Item::EItemType::Consumable)
+				{
+					owningPlayer->ConsumeItem(currentSelection);
+				}
 			}
 		}
 		break;

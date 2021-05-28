@@ -13,10 +13,10 @@ template<class T>
 using  Array = std::vector<T>;
 
 #pragma region Pair
-template<class T>
-using Pair = std::pair<T>;
-#define key first
-#define value second
+template<class Key, class Value>
+using Pair = std::pair<Key,Value>;
+#define Key first
+#define Value second
 #pragma endregion
 
 //array of pairs
