@@ -14,6 +14,9 @@ namespace Engine
 
 		Array<Engine::UI::CUIBase*> inventoryItemsUI = Array<Engine::UI::CUIBase*>();
 
+		//Currently applied effects
+		Array<LastingEffect>effects = Array<LastingEffect>();
+
 		bool selected = false;
 
 		RenderData::ColorPalleteType defaultColorPallet;
@@ -41,10 +44,15 @@ namespace Engine
 
 		Item GetItem(int id, bool& has);
 
+		//Tries to consume item -> or does nothing if item can not be consumed
+		void ConsumeItem(int id);
+
 		//Tries to update item slot it. Does nothing if id is invalid
 		void EquipItem(int id);
 
 		int Health = 1;
+
+		int MaxHealth = 10;
 
 		int Strenght = 1;
 

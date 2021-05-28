@@ -12,6 +12,17 @@
 template<class T>
 using  Array = std::vector<T>;
 
+#pragma region Pair
+template<class T>
+using Pair = std::pair<T>;
+#define key first
+#define value second
+#pragma endregion
+
+//array of pairs
+template<class Key,class Value>
+using Map = std::vector<std::pair<Key, Value>>;
+
 #ifndef valid_index
 //This macro is used as any Array function
 //Example array_obj.valid_index(9) 

@@ -63,7 +63,7 @@ void Dungeon::CInventoryUI::ProcessInput(int input)
 			//check if id is valid
 			if (has)
 			{
-				if (item.itemType == Engine::Item::ItemType::Equippable)
+				if (item.ItemType == Engine::Item::EItemType::Equippable)
 				{
 					owningPlayer->EquipItem(currentSelection);
 				}

@@ -79,26 +79,81 @@ Engine::Item Engine::CPawn::GetItem(int id, bool& has)
 	}
 }
 
+void Engine::CPawn::ConsumeItem(int id)
+{
+	if (Items.valid_index(id))
+	{
+		for (auto it = Items[id].Effects.begin(); it != Items[id].Effects.end(); ++it)
+		{
+			switch ((*it).key)
+			{
+			case Engine::Item::EEffectType::Damage:
+			{
+				//by default it's "-" so that it would be easier to tell that "-" in the file is meant to be the addition
+				Strenght -= (*it).value;
+				break;
+			}
+			case  Engine::Item::EEffectType::Damage_Lasting:case  Engine::Item::EEffectType::Health_Lasting:
+			{
+				effects.push_back({ (*it).key,(*it).value,5 });
+				break;
+			}
+			case  Engine::Item::EEffectType::Health:
+			{
+				//Because health is health reduction of health is damage
+				if ((*it).value < 0)
+				{
+					ReceiveDamage((*it).value, this);
+				}
+				else
+				{
+					Health += (*it).value;
+				}
+				break;
+			}
+			case  Engine::Item::EEffectType::Health_Max:
+			{
+				//by default it's "+" so that it would be easier to tell that "-" in the file is meant to be the subtraction
+				MaxHealth += (*it).value;
+				break;
+			}
+			case  Engine::Item::EEffectType::Luck:
+			{
+				//there is no such thing as luck
+				//...at least for now
+				break;
+			}
+			default:
+				break;
+			}
+		}
+	}
+}
+
 void Engine::CPawn::EquipItem(int id)
 {
-	switch (Items[id].Type)
+	if (Items.valid_index(id))
 	{
-	case Engine::Item::EquippableType::Armor:
-	{
-		ArmorItem = id;
-		World->AddDebugMessage("Equipped item in armor slot");
 
-		break;
-	}
-	case Engine::Item::EquippableType::Weapon:
-	{
-		SwordItemId = id;
-		World->AddDebugMessage("Equipped item in sword slot");
+		switch (Items[id].Type)
+		{
+		case Engine::Item::EEquippableType::Armor:
+		{
+			ArmorItem = id;
+			World->AddDebugMessage("Equipped item in armor slot");
 
-		break;
-	}
-	default:
-		break;
+			break;
+		}
+		case Engine::Item::EEquippableType::Weapon:
+		{
+			SwordItemId = id;
+			World->AddDebugMessage("Equipped item in sword slot");
+
+			break;
+		}
+		default:
+			break;
+		}
 	}
 }
 

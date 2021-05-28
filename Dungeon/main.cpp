@@ -79,8 +79,8 @@ int main()
 	enemy->Collision = CollisionType::Block;
 	
 	CItemPickup* item = world->SpawnObject<CItemPickup>(Item("itemioooo","TrashierTarsh",10,5 ));
-	item->Item.itemType = Engine::Item::ItemType::Equippable;
-	item->Item.Type = Engine::Item::EquippableType::Weapon;
+	item->Item.ItemType = Engine::Item::EItemType::Equippable;
+	item->Item.Type = Engine::Item::EEquippableType::Weapon;
 	item->Location = Vector(5, 6);
 
 	world->DebugOutput = world->CreateUI<UI::CUIBase>(nullptr, "DebugUIFrame", "-Debug Info-", Vector(0, 20), Vector(15, 10), true);
