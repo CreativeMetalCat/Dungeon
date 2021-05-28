@@ -12,6 +12,24 @@ Engine::CWorld::CWorld()
 	LoadItemFile();
 }
 
+Engine::Item Engine::CWorld::GetItemDefaultData(String itemName, bool& hasData) const
+{
+	if (!defaultItemData.empty())
+	{
+		Array<Item>::const_iterator it = std::find_if(defaultItemData.begin(), defaultItemData.end(), [this, itemName](Item item) {return itemName == item.name; });
+		if (it != defaultItemData.end())
+		{
+			hasData = true;
+			return *it;
+		}
+	}
+	else
+	{
+		hasData = false;
+		return Engine::Item("item0", "item0", -1, -1);
+	}
+}
+
 void Engine::CWorld::AddDebugMessage(String msg)
 {
 	if (MaxDebugMessageCount == -1 || debugOutputMessages.size() < MaxDebugMessageCount)
@@ -91,26 +109,42 @@ bool Engine::CWorld::LoadItemFile()
 	else
 	{
 		nlohmann::json items = nlohmann::json::parse(itemFileText);
-		for (auto it = items["items"].begin(); it != items["items"].end(); ++it)
+		try
 		{
-			//*it here is the item data
-			Item res = Item((*it)["name"], (*it)["display_name"], (*it)["max_amount"], (*it)["default_amount"]);
-			res.EquippableType = (Item::EEquippableType)(*it)["equippable_type"];
-			res.ItemType = (Item::EItemType)(*it)["type"];
-
-			for (auto eff_it = (*it)["effects"].begin(); eff_it != (*it)["effects"].end(); ++eff_it)
+			for (nlohmann::json::iterator it = items["items"].begin(); it != items["items"].end(); ++it)
 			{
-				res.Effects.push_back
-				(
-					{
-						(Item::EEffectType)(*eff_it)["type"],
-						(int)(*eff_it)["amount"]
-					}
-				);
+				String h = (*it)["name"].get<String>();
+				//*it here is the item data
+				Item res = Item((*it)["name"], (*it)["display_name"], (*it)["max_amount"], (*it)["default_amount"]);
+				res.EquippableType = (Item::EEquippableType)(int)(*it)["equippable_type"];
+				res.ItemType = (Item::EItemType)(int)(*it)["type"];
+
+				for (auto eff_it = (*it)["effects"].begin(); eff_it != (*it)["effects"].end(); ++eff_it)
+				{
+
+					res.Effects.push_back
+					(
+						{
+							(Item::EEffectType)(int)(*eff_it)["type"],
+							(int)(*eff_it)["amount"]
+						}
+					);
+				}
+				defaultItemData.push_back(res);
 			}
-			defaultItemData.push_back(res);
+			return true;
 		}
-		return true;
+		catch (nlohmann::detail::parse_error e)
+		{
+			AddDebugMessage(e.what());
+			return false;
+		}
+		catch (nlohmann::detail::type_error e)
+		{
+			AddDebugMessage(e.what());
+			return false;
+		}
+		
 	}
 }
 

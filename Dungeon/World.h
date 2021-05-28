@@ -34,6 +34,10 @@ namespace Engine
 
 		UI::CUIBase* DebugOutput = nullptr;
 
+		//Default item data is basically the default thing
+		//this function uses std::find_if for search and basically iterates over whole item array so avoid using in big amounts in very close parts
+		Engine::Item GetItemDefaultData(String itemName, bool& hasData)const;
+
 		//This value is set by object if there was an input that has effect on gameplay
 		//Reset after all update functions are called
 		bool GameplayUpdate = false;

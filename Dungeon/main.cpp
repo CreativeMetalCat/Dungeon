@@ -78,9 +78,8 @@ int main()
 	enemy->Location = Vector(5, 5);
 	enemy->Collision = CollisionType::Block;
 	
-	CItemPickup* item = world->SpawnObject<CItemPickup>(Item("itemioooo","TrashierTarsh",10,5 ));
-	item->Item.ItemType = Engine::Item::EItemType::Consumable;
-	item->Item.Effects.push_back({ Engine::Item::EEffectType::Health_Lasting,1 });
+	bool has = false;
+	CItemPickup* item = world->SpawnObject<CItemPickup>(world->GetItemDefaultData("trash",has));
 	item->Location = Vector(5, 6);
 
 	world->DebugOutput = world->CreateUI<UI::CUIBase>(nullptr, "DebugUIFrame", "-Debug Info-", Vector(0, 20), Vector(15, 10), true);

@@ -11,7 +11,7 @@ Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
 {
 	Faction = Engine::EFaction::Player;
 	UpdateType = Engine::EUpdateType::EventOnly;
-	Health = 1;
+	Health = 10;
 }
 
 bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId, bool auto_eqiup)

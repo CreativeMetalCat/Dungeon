@@ -2,9 +2,9 @@
     "items":
     [
         {
-            "name":"item0",
-            "display_name":"item0",
-            "max_amout":99,
+            "name":"item1",
+            "display_name":"item1",
+            "max_amount":99,
             "default_amount":1,
             "effects":
             [
@@ -14,6 +14,21 @@
                 }
             ],
             "type":0,
+            "equippable_type":0
+        },
+        {
+            "name":"trash",
+            "display_name":"Trash",
+            "max_amount":99,
+            "default_amount":1,
+            "effects":
+            [
+                {
+                    "type":4,
+                    "amount":-1
+                }
+            ],
+            "type":1,
             "equippable_type":0
         }
     ]
