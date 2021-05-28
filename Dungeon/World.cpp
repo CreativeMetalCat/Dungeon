@@ -113,7 +113,6 @@ bool Engine::CWorld::LoadItemFile()
 		{
 			for (nlohmann::json::iterator it = items["items"].begin(); it != items["items"].end(); ++it)
 			{
-				String h = (*it)["name"].get<String>();
 				//*it here is the item data
 				Item res = Item((*it)["name"], (*it)["display_name"], (*it)["max_amount"], (*it)["default_amount"]);
 				res.EquippableType = (Item::EEquippableType)(int)(*it)["equippable_type"];

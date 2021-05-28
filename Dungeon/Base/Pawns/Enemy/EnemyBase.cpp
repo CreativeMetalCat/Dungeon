@@ -48,12 +48,15 @@ void Engine::CEnemyBase::Attack(CBaseObject* victim)
 
 void Engine::CEnemyBase::Die(CBaseObject* killer)
 {
-	//TODO: Pickup must be loaded from asset file
-	Engine::CItemPickup * pickup = World->SpawnObject<Engine::CItemPickup>(Item("itemio", "Trash", 10, 5));
-	
-	pickup->Item.ItemType = Engine::Item::EItemType::Equippable;
-	pickup->Item.EquippableType = Engine::Item::EEquippableType::Weapon;
-	pickup->Location = Location;
+	bool has;
+
+	Item drop = World->GetItemDefaultData("trash", has);
+	if (has)
+	{
+		Engine::CItemPickup* pickup = World->SpawnObject<Engine::CItemPickup>(drop);
+
+		pickup->Location = Location;
+	}
 
 	World->AddDebugMessage(Name + " died by the hands of " + killer->Name);
 	Destroy();
