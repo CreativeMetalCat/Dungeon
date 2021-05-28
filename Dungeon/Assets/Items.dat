@@ -1,0 +1,20 @@
+{
+    "items":
+    [
+        {
+            "name":"item0",
+            "display_name":"item0",
+            "max_amout":99,
+            "default_amount":1,
+            "effects":
+            [
+                {
+                    "type":1,
+                    "amount":1
+                }
+            ],
+            "type":0,
+            "equippable_type":0
+        }
+    ]
+}

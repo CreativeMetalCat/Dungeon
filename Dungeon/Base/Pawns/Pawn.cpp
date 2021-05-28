@@ -130,7 +130,7 @@ void Engine::CPawn::EquipItem(int id)
 	if (Items.valid_index(id))
 	{
 
-		switch (Items[id].Type)
+		switch (Items[id].EquippableType)
 		{
 		case Engine::Item::EEquippableType::Armor:
 		{

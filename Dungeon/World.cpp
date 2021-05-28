@@ -9,6 +9,7 @@
 Engine::CWorld::CWorld()
 {
 	if (!LoadEntityFile()) { quick_exit(5); }
+	LoadItemFile();
 }
 
 void Engine::CWorld::AddDebugMessage(String msg)
@@ -62,6 +63,53 @@ bool Engine::CWorld::LoadEntityFile()
 	}
 	else
 	{
+		return true;
+	}
+}
+
+bool Engine::CWorld::LoadItemFile()
+{
+	std::ifstream assetStream("Assets/Items.dat", std::ios::in);
+	String itemFileText;
+	if (assetStream.is_open())
+	{
+		std::stringstream sstr;
+		sstr << assetStream.rdbuf();
+		itemFileText = sstr.str();
+		assetStream.close();
+	}
+	else
+	{
+		return false;
+	}
+
+	if (entityFileText == "")
+	{
+		return false;
+	}
+	//parse data into the array
+	else
+	{
+		nlohmann::json items = nlohmann::json::parse(itemFileText);
+		for (auto it = items["items"].begin(); it != items["items"].end(); ++it)
+		{
+			//*it here is the item data
+			Item res = Item((*it)["name"], (*it)["display_name"], (*it)["max_amount"], (*it)["default_amount"]);
+			res.EquippableType = (Item::EEquippableType)(*it)["equippable_type"];
+			res.ItemType = (Item::EItemType)(*it)["type"];
+
+			for (auto eff_it = (*it)["effects"].begin(); eff_it != (*it)["effects"].end(); ++eff_it)
+			{
+				res.Effects.push_back
+				(
+					{
+						(Item::EEffectType)(*eff_it)["type"],
+						(int)(*eff_it)["amount"]
+					}
+				);
+			}
+			defaultItemData.push_back(res);
+		}
 		return true;
 	}
 }

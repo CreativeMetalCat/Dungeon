@@ -2,10 +2,16 @@
 #include "Base/BaseObject.hpp"
 #include "Base/UI/UIBase.hpp"
 #include "Base/Macros.h"
-
+#include "Base/Item/Item.hpp"
 
 namespace Engine
 {
+	
+	/*
+	* World is the class that manages object updates, ui updates etc.
+	* It represents the game itself
+	* Note: Level change is also handled by world as it just clears object pool and loads new ones from layout
+	*/
 	class CWorld
 	{
 	private:
@@ -14,6 +20,8 @@ namespace Engine
 		//Array of debug messages that will be printed out when update is called
 		//Cleared after each print out
 		Array<String>debugOutputMessages = Array<String>();
+
+		Array<Engine::Item>defaultItemData = Array<Engine::Item>();
 	protected:
 		//File will be loaded into the memory in the start of the game and then data will be read from here
 		String entityFileText;
@@ -41,6 +49,9 @@ namespace Engine
 
 		//Loads entity file into the memory for future access
 		bool LoadEntityFile();
+
+		//Fills defaultItemData with data from Items.dat
+		bool LoadItemFile();
 
 		//Call process input functions in objects
 		void ProcessInput();

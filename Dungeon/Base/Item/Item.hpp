@@ -47,7 +47,7 @@ namespace Engine
 			name(_name), DisplayName(displayName), MaxAmout(maxAmout), CurrentAmout(currentAmout) {}
 
 		//What kind of item this is 
-		EEquippableType Type = EEquippableType::None;
+		EEquippableType EquippableType = EEquippableType::None;
 
 		String name = "item0";
 
