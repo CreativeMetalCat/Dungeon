@@ -14,7 +14,7 @@ Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
 	Health = 10;
 }
 
-bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId)
+bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId, bool auto_eqiup)
 {
 	bool res = CPawn::AddItem(item, amountLeft, resultId);
 	//if we have less items that we had in the start

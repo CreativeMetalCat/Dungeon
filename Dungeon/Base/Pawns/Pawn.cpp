@@ -7,7 +7,7 @@ Engine::CPawn::CPawn(char displayChar):Engine::CBaseObject(displayChar)
 	Faction = EFaction::World;
 }
 
-bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId)
+bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId,bool auto_eqiup)
 {
 	amountLeft = item.CurrentAmout;
 	resultId = -1;
@@ -37,6 +37,10 @@ bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId)
 		resultId = Items.size();
 		Items.push_back(item);
 		amountLeft = 0;
+		if (auto_eqiup)
+		{
+			EquipItem(resultId);
+		}
 	}
 	return amountLeft == 0;
 }
@@ -44,6 +48,62 @@ bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId)
 bool Engine::CPawn::RemoveItem(String name, int amount)
 {
 	return false;
+}
+
+Engine::Item Engine::CPawn::GetItem(String name, bool& has)
+{
+	Array<Item>::iterator it = std::find_if(Items.begin(), Items.end(), [this, name](Engine::Item item) {return item.name == name; });
+	if (it != Items.end())
+	{
+		has = true;
+		return *it;
+	}
+	else
+	{
+		has = false;
+		return Engine::Item("item0", "item0", -1, -1);
+	}
+}
+
+Engine::Item Engine::CPawn::GetItem(int id, bool& has)
+{
+	if (Items.valid_index(id))
+	{
+		has = true;
+		return Items[id];
+	}
+	else
+	{
+		has = false;
+		return Engine::Item("item0", "item0", -1, -1);
+	}
+}
+
+void Engine::CPawn::EquipItem(int id)
+{
+	switch (Items[id].Type)
+	{
+	case Engine::Item::EquippableType::Armor:
+	{
+		if (ArmorItem == -1)
+		{
+			ArmorItem = id;
+			World->AddDebugMessage("Equipped item in armor slot");
+		}
+		break;
+	}
+	case Engine::Item::EquippableType::Weapon:
+	{
+		if (SwordItemId == -1)
+		{
+			SwordItemId = id;
+			World->AddDebugMessage("Equipped item in sword slot");
+		}
+		break;
+	}
+	default:
+		break;
+	}
 }
 
 int Engine::CPawn::ReceiveDamage(int damage, CPawn* damager)

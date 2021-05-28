@@ -16,7 +16,8 @@ namespace Dungeon
 	public:
 		CPlayer(Engine::UI::CUIBase* _inventoryFrame = nullptr);
 
-		virtual bool AddItem(Engine::Item item,int &amountLeft, int& resultId)override;
+		//Adds item to the inventory. If item slot of the same type as given item -> this item will be put in that slot
+		virtual bool AddItem(Engine::Item item,int &amountLeft, int& resultId, bool auto_eqiup = true)override;
 
 		virtual void ProcessInput(int) override;
 

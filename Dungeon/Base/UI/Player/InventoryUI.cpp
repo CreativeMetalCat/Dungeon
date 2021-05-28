@@ -50,6 +50,26 @@ void Dungeon::CInventoryUI::ProcessInput(int input)
 	case '8':
 		changeSelection(7);
 		break;
+		//needs better key, because enter is not relaiable
+	case KEY_ENTER:
+	{
+		if (owningPlayer)
+		{
+			//We need to equip/consume the item
+			//first the equippement
+			bool has = false;
+			Engine::Item item = owningPlayer->GetItem(currentSelection, has);
+			//check if id is valid
+			if (has)
+			{
+				if (item.itemType == Engine::Item::ItemType::Equippable)
+				{
+					owningPlayer->EquipItem(currentSelection);
+				}
+			}
+		}
+		break;
+	}
 	default:
 		break;
 	}

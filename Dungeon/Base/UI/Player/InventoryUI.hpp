@@ -10,6 +10,8 @@ namespace Dungeon
 		int currentSelection = -1;
 
 		void changeSelection(int selectionId);
+
+		CPlayer* owningPlayer = nullptr;
 	public:
 		virtual void ProcessInput(int)override;
 	};

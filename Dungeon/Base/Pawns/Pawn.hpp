@@ -20,11 +20,29 @@ namespace Engine
 	public:
 		CPawn(char displayChar = 'P');
 
+#pragma region items_slots
+		//This item will be used to dictate damage of the pawn udring attack
+		//-1 means there is no item in the slot
+		int SwordItemId = -1;
+
+		//This item will be used damage dealt to this pawn and if there are any effects to apply
+		 //-1 means there is no item in the slot
+		int ArmorItem = -1;
+#pragma endregion
+
 		int MaxItems = 5;
 
-		virtual bool AddItem(Item item,int &amountLeft, int& resultId);
+		//Adds item to the inventory. If item slot of the same type as given item -> this item will be put in that slot
+		virtual bool AddItem(Item item, int& amountLeft, int& resultId, bool auto_eqiup = true);
 
 		virtual bool RemoveItem(String name, int amount);
+
+		Item GetItem(String name, bool& has);
+
+		Item GetItem(int id, bool& has);
+
+		//Tries to update item slot it. Does nothing if id is invalid
+		void EquipItem(int id);
 
 		int Health = 1;
 
