@@ -85,20 +85,16 @@ void Engine::CPawn::EquipItem(int id)
 	{
 	case Engine::Item::EquippableType::Armor:
 	{
-		if (ArmorItem == -1)
-		{
-			ArmorItem = id;
-			World->AddDebugMessage("Equipped item in armor slot");
-		}
+		ArmorItem = id;
+		World->AddDebugMessage("Equipped item in armor slot");
+
 		break;
 	}
 	case Engine::Item::EquippableType::Weapon:
 	{
-		if (SwordItemId == -1)
-		{
-			SwordItemId = id;
-			World->AddDebugMessage("Equipped item in sword slot");
-		}
+		SwordItemId = id;
+		World->AddDebugMessage("Equipped item in sword slot");
+
 		break;
 	}
 	default:

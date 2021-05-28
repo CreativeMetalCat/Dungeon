@@ -45,6 +45,8 @@ int main()
 	CPlayer* player = world->SpawnObject<CPlayer>(invUi);
 	player->Location = Engine::Vector(20, 9);
 
+	invUi->owningPlayer = player;
+
 	for (int i = 0; i < 10; i++)
 	{
 

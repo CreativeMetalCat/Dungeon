@@ -11,8 +11,9 @@ namespace Dungeon
 
 		void changeSelection(int selectionId);
 
-		CPlayer* owningPlayer = nullptr;
+		
 	public:
+		CPlayer* owningPlayer = nullptr;
 		virtual void ProcessInput(int)override;
 	};
 }

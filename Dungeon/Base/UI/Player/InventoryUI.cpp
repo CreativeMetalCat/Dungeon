@@ -50,8 +50,9 @@ void Dungeon::CInventoryUI::ProcessInput(int input)
 	case '8':
 		changeSelection(7);
 		break;
-		//needs better key, because enter is not relaiable
-	case KEY_ENTER:
+
+	//needs better key, because enter is not relaiable
+	case KEY_ENTER :case '0':
 	{
 		if (owningPlayer)
 		{
