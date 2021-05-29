@@ -18,6 +18,7 @@ public:
 	void Bind(T func);
 
 	//Calls all functions binded to the event
+	//eventContext -> object that broadcasts the event
 	template<class ... Args, class ObjType>
 	void BroadCast(ObjType  eventContext, Args ... args);
 

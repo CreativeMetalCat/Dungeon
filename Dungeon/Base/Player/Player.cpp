@@ -6,9 +6,10 @@
 #include <string>
 #include "Base/Render/RenderMacros.h"
 
+
 void Dungeon::CPlayer::UpdateItemUI(int id)
 {
-	quick_exit(69);
+	inventoryFrame->ChildrenUI[id]->DisplayName = String(Items[id].DisplayName + " x " + STRING(Items[id].CurrentAmout));
 }
 
 Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
@@ -18,21 +19,21 @@ Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
 	UpdateType = Engine::EUpdateType::EventOnly;
 	Health = 10;
 
-	OnItemCountUpdate.Bind(static_cast<void(Engine::CBaseObject::*)(int)>(&CPlayer::UpdateItemUI));
+	OnItemCountUpdatedEvent.Bind(static_cast<void(Engine::CBaseObject::*)(int)>(&CPlayer::UpdateItemUI));
 }
 
 bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId, bool auto_eqiup)
 {
 	bool res = CPawn::AddItem(item, amountLeft, resultId);
 	//if we have less items that we had in the start
-	if (amountLeft != item.CurrentAmout)
+	if (amountLeft != item.CurrentAmout && (amountLeft > 0 || resultId != -1))
 	{
 		if (World)
 		{
 			World->CreateUI<Engine::UI::CUIBase>(
 				inventoryFrame,
 				item.name + "_ui",
-				std::string(item.DisplayName + " x " + std::to_string(item.CurrentAmout)),
+				String(item.DisplayName + " x " + STRING(item.CurrentAmout)),
 				Engine::Vector(1, 1 + (resultId == -1 ? 0 : resultId)),
 				Engine::Vector(0, 0), false);
 		}
@@ -124,4 +125,9 @@ void Dungeon::CPlayer::Update()
 			target = nullptr;
 		}
 	}
+}
+
+void Dungeon::CPlayer::OnItemCountUpdated(int id)
+{
+	CPawn::OnItemCountUpdated(id);
 }

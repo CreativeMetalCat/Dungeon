@@ -11,13 +11,15 @@ namespace Engine
 	events:
 		
 		//Called when there is a new entry to the item list
-		CEvent<void(CBaseObject::*)()>OnItemAdded;
+		CEvent<void(CBaseObject::*)()>OnItemAddedEvent;
 
 		//Called when Count of item in the inventory is updated
-		CEvent<void(CBaseObject::*)(int/*id of item*/)>OnItemCountUpdate;
+		CEvent<void(CBaseObject::*)(int/*id of item*/)>OnItemCountUpdatedEvent;
 	protected:
 
 		typedef void (CBaseObject::* pFunc)();
+
+		virtual void OnItemCountUpdated(int id);
 
 		//even though pawn has limited invenotry it is much easier to change size of inventory due to game events if array already has no limits
 		Array<Item>Items = Array<Item>();

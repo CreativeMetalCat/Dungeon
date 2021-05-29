@@ -81,6 +81,8 @@ int main()
 	bool has = false;
 	CItemPickup* item = world->SpawnObject<CItemPickup>(world->GetItemDefaultData("trash",has));
 	item->Location = Vector(5, 6);
+	CItemPickup* item2 = world->SpawnObject<CItemPickup>(world->GetItemDefaultData("trash", has));
+	item2->Location = Vector(5, 7);
 
 	world->DebugOutput = world->CreateUI<UI::CUIBase>(nullptr, "DebugUIFrame", "-Debug Info-", Vector(0, 20), Vector(15, 10), true);
 

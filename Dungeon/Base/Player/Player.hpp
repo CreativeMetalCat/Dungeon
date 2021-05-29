@@ -26,6 +26,8 @@ namespace Dungeon
 		// Inherited via CPawn
 		virtual void Update() override;
 
+		virtual void OnItemCountUpdated(int id)override;
+
 		int Mana = 1;
 	};
 }
