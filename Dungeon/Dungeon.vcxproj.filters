@@ -51,7 +51,7 @@
     <ClCompile Include="Base\UI\Player\InventoryUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Event.cpp">
+    <ClCompile Include="Base\Events\Event.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,7 +101,7 @@
     <ClInclude Include="Base\UI\Player\InventoryUI.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Event.hpp">
+    <ClInclude Include="Base\Events\Event.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

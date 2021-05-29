@@ -7,7 +7,17 @@ namespace Engine
 	//Similar to base object but has basic collision checks
 	class CPawn : public CBaseObject
 	{
+		
+	events:
+		
+		//Called when there is a new entry to the item list
+		CEvent<void(CBaseObject::*)()>OnItemAdded;
+
+		//Called when Count of item in the inventory is updated
+		CEvent<void(CBaseObject::*)(int/*id of item*/)>OnItemCountUpdate;
 	protected:
+
+		typedef void (CBaseObject::* pFunc)();
 
 		//even though pawn has limited invenotry it is much easier to change size of inventory due to game events if array already has no limits
 		Array<Item>Items = Array<Item>();

@@ -22,11 +22,13 @@ bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId,bool auto_e
 				{
 					amountLeft = amountLeft - Items[i].MaxAmout - Items[i].CurrentAmout;
 					Items[i].CurrentAmout = Items[i].MaxAmout;
+					OnItemCountUpdate.BroadCast(this,i);
 				}
 				else
 				{
 					amountLeft = 0;
 					Items[i].CurrentAmout += amountLeft;
+					OnItemCountUpdate.BroadCast(this, i);
 					return true;
 				}
 			}

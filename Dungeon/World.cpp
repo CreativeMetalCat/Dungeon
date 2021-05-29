@@ -23,11 +23,8 @@ Engine::Item Engine::CWorld::GetItemDefaultData(String itemName, bool& hasData) 
 			return *it;
 		}
 	}
-	else
-	{
-		hasData = false;
-		return Engine::Item("item0", "item0", -1, -1);
-	}
+	hasData = false;
+	return Engine::Item("item0", "item0", -1, -1);
 }
 
 void Engine::CWorld::AddDebugMessage(String msg)

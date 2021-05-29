@@ -6,12 +6,19 @@
 #include <string>
 #include "Base/Render/RenderMacros.h"
 
-Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame) 
+void Dungeon::CPlayer::UpdateItemUI(int id)
+{
+	quick_exit(69);
+}
+
+Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
 	:Engine::CPawn('@'),inventoryFrame(_inventoryFrame)
 {
 	Faction = Engine::EFaction::Player;
 	UpdateType = Engine::EUpdateType::EventOnly;
 	Health = 10;
+
+	OnItemCountUpdate.Bind(static_cast<void(Engine::CBaseObject::*)(int)>(&CPlayer::UpdateItemUI));
 }
 
 bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId, bool auto_eqiup)

@@ -13,6 +13,8 @@ namespace Dungeon
 
 		//Who is going to be attacked next
 		CPawn* target = nullptr;
+
+		void UpdateItemUI(int id);
 	public:
 		CPlayer(Engine::UI::CUIBase* _inventoryFrame = nullptr);
 

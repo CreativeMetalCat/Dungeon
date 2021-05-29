@@ -1,5 +1,6 @@
 #pragma once
 #include "Types/Types.hpp"
+#include "Base/Events/Event.hpp"
 
 namespace Engine 
 {
@@ -27,6 +28,7 @@ namespace Engine
 	//base object for everything that player will interact in world
 	class CBaseObject
 	{
+	
 	protected:
 		bool pendingKill = false;
 
@@ -35,6 +37,8 @@ namespace Engine
 		String Name = "CBaseObject";
 
 		bool Valid()const { return !pendingKill; }
+		
+		
 
 		//id is not used for anything as of now, but could be useful for debug
 		unsigned int id = 0;
