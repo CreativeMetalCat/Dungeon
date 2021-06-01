@@ -7,50 +7,26 @@
  * Note: nothing is stopping you from using this as array, but please don't as this implementation can change
  * Note2: event functions can not return anything, but they don't have any limits on arguments
  * Note3: This implementation also relies on std::vector, because it is meant to be simple
+ * T -> Function 
+ * C -> Context class(Usually the base class)
 */
-template<class T>
+template<class T,class C>
 class CEvent
 {
 protected:
-	Array<T> functions = Array<T>();
+	Array<Pair<T,C>> functions = Array<Pair<T, C>>();
 public:
 	//adds function to this event
-	void Bind(T func);
+	void Bind(T func,C contextClass);
 
 	//Calls all functions binded to the event
 	//eventContext -> object that broadcasts the event
-	template<class ... Args, class ObjType>
-	void BroadCast(ObjType  eventContext, Args ... args);
+	template<class ... Args>
+	void BroadCast(Args ... args);
 
 	//Removes a bind from function
-	void UnBind(T func);
+	void UnBind(T func,C contextClass);
 };
-
-template<class T>
-inline void CEvent<T>::Bind(T func)
-{
-	functions.push_back(func);
-}
-
-template<class T>
-inline void CEvent<T>::UnBind(T func)
-{
-	auto it = std::find(functions.begin(), functions.end(), func);
-	if (it != functions.end())
-	{
-		functions.erase(it);
-	}
-}
-
-template<class T>
-template<class ...Args,class ObjType>
-inline void CEvent<T>::BroadCast(ObjType  eventContext, Args ...args)
-{
-	for (int i = 0; i < functions.size(); i++)
-	{
-		(eventContext->*functions[i])(args...);
-	}
-}
 
 #ifndef EVENT
 //this macro does nothing, but is useful when you need to tell that certain thing is an event
@@ -60,3 +36,29 @@ inline void CEvent<T>::BroadCast(ObjType  eventContext, Args ...args)
 #ifndef events
 #define events public
 #endif // !events
+
+template<class T, class C>
+inline void CEvent<T, C>::Bind(T func, C contextClass)
+{
+	functions.push_back(Pair<T,C>(func,contextClass));
+}
+
+template<class T, class C>
+inline void CEvent<T, C>::UnBind(T func, C contextClass)
+{
+	auto it = std::find(functions.begin(), functions.end(), Pair<T,C>(func,contextClass));
+	if (it != functions.end())
+	{
+		functions.erase(it);
+	}
+}
+
+template<class T, class C>
+template<class ...Args>
+inline void CEvent<T, C>::BroadCast(Args ...args)
+{
+	for (int i = 0; i < functions.size(); i++)
+	{
+		(functions[i].second->*functions[i].first)(args...);
+	}
+}
