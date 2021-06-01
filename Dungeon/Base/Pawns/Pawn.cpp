@@ -1,32 +1,41 @@
 #include "Pawn.hpp"
 #include "World.h"
 
+//#define OLD_LOC_CHECK
+
+void Engine::CPawn::OnItemCountUpdated(int id)
+{
+	OnItemCountUpdatedEvent.BroadCast(this, id);
+}
 
 Engine::CPawn::CPawn(char displayChar):Engine::CBaseObject(displayChar)
 {
+	EXEC_IF_VALID(World, World->SetCellData(Location, { Location,CollisionType::Block == Collision,id }););
 	Faction = EFaction::World;
 }
 
 bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId,bool auto_eqiup)
 {
-	amountLeft = item.CurrentAmout;
+	amountLeft = item.CurrentAmount;
 	resultId = -1;
 	//check if can add the item
 	for (int i = 0; i < Items.size(); i++)
 	{
 		if (Items[i].name == item.name)
 		{
-			if (Items[i].MaxAmout - Items[i].CurrentAmout > 0)
+			if (Items[i].MaxAmout - Items[i].CurrentAmount > 0)
 			{
-				if (amountLeft >= Items[i].MaxAmout - Items[i].CurrentAmout)
+				if (amountLeft >= Items[i].MaxAmout - Items[i].CurrentAmount)
 				{
-					amountLeft = amountLeft - Items[i].MaxAmout - Items[i].CurrentAmout;
-					Items[i].CurrentAmout = Items[i].MaxAmout;
+					amountLeft = amountLeft - Items[i].MaxAmout - Items[i].CurrentAmount;
+					Items[i].CurrentAmount = Items[i].MaxAmout;
+					OnItemCountUpdated(i);
 				}
 				else
 				{
+					Items[i].CurrentAmount += amountLeft;
 					amountLeft = 0;
-					Items[i].CurrentAmout += amountLeft;
+					OnItemCountUpdated(i);
 					return true;
 				}
 			}
@@ -37,6 +46,7 @@ bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId,bool auto_e
 		resultId = Items.size();
 		Items.push_back(item);
 		amountLeft = 0;
+		OnItemAddedEvent.BroadCast(this, item.DisplayName, Items.size() - 1);
 		if (auto_eqiup)
 		{
 			EquipItem(resultId);
@@ -45,8 +55,39 @@ bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId,bool auto_e
 	return amountLeft == 0;
 }
 
-bool Engine::CPawn::RemoveItem(String name, int amount)
+bool Engine::CPawn::RemoveItem(String name, int amount, int& amount_left)
 {
+	if (amount <= 0) return false;
+
+	amount_left = amount;
+	for (int i = 0; i < Items.size(); i++)
+	{
+		if (Items[i].name == name)
+		{
+			if (Items[i].CurrentAmount >= amount_left)
+			{
+				Items[i].CurrentAmount -= amount_left;
+				amount_left = 0;
+				OnItemCountUpdated(i);
+				break;
+			}
+			else
+			{
+				amount_left -= Items[i].CurrentAmount;
+				Items[i].CurrentAmount -= (amount_left + Items[i].CurrentAmount);
+				OnItemCountUpdated(i);
+			}
+			//Items[i].CurrentAmount -= (Items[i].CurrentAmount >= amount_left) ? amount_left : Items[i].CurrentAmount;
+		}
+	}
+	for (int i = Items.size() - 1; i > -1; i--)
+	{
+		if (Items[i].CurrentAmount == 0)
+		{
+			OnItemRemovedEvent.BroadCast(this, Items[i].name, i);
+			Items.erase(Items.begin() + i);	
+		}
+	}
 	return false;
 }
 
@@ -130,7 +171,7 @@ void Engine::CPawn::EquipItem(int id)
 	if (Items.valid_index(id))
 	{
 
-		switch (Items[id].Type)
+		switch (Items[id].EquippableType)
 		{
 		case Engine::Item::EEquippableType::Armor:
 		{
@@ -161,18 +202,19 @@ int Engine::CPawn::ReceiveDamage(int damage, CPawn* damager)
 
 void Engine::CPawn::MoveTo(Engine::Vector newLocation)
 {
+#ifdef OLD_LOC_CHECK
 	if (World)
 	{
 		//do a very basic for loop to find if there are objects in that spot
 
-		Array<CBaseObject*>::iterator it =  std::find_if(World->Objects.begin(), World->Objects.end(), [newLocation](Engine::CBaseObject* obj) {return obj->Location == newLocation; });
+		Array<CBaseObject*>::iterator it = std::find_if(World->Objects.begin(), World->Objects.end(), [newLocation](Engine::CBaseObject* obj) {return obj->Location == newLocation; });
 		if (it != World->Objects.end())
 		{
 			if ((*it)->Collision == CollisionType::Overlap)
 			{
 				(*it)->OnOverlap(this);
 			}
-			else if((*it)->Collision == CollisionType::Block)
+			else if ((*it)->Collision == CollisionType::Block)
 			{
 				//we could not move so we stayed in place
 			}
@@ -187,10 +229,55 @@ void Engine::CPawn::MoveTo(Engine::Vector newLocation)
 			Location = newLocation;
 		}
 	}
+#else
+	//Check if that cell is occupied
+	if (World)
+	{
+		Cell cell = World->GetCellData(newLocation);
+		if (cell.Occupied || cell.OccupantId != -1)
+		{
+			if (CBaseObject* obj = World->GetObjectByObjectId(cell.OccupantId))
+			{
+				if (obj->Collision == CollisionType::Overlap)
+				{
+					obj->OnOverlap(this);
+					//we still need to move into that cell
+
+					//clear data of previous location cell
+					World->SetCellData(Location, { Location,false,-1 });
+					//set data for new cell
+					World->SetCellData(newLocation, { Location,CollisionType::Block == Collision,id });
+					Location = newLocation;
+				}
+				else if (obj->Collision == CollisionType::Block)
+				{
+					//we could not move so we stayed in place
+				}
+				else
+				{
+					//clear data of previous location cell
+					World->SetCellData(Location, { newLocation,false,-1 });
+					//set data for new cell
+					World->SetCellData(newLocation, { newLocation,CollisionType::Block == Collision,id });
+					Location = newLocation;
+				}
+			}
+		}
+		else
+		{
+			//clear data of previous location cell
+			World->SetCellData(Location, { Location,false,-1 });
+			//set data for new cell
+			World->SetCellData(newLocation, { Location,CollisionType::Block == Collision,id });
+			Location = newLocation;
+		}
+	}
+#endif
 }
 
 bool Engine::CPawn::Move(Engine::Vector direction)
 {
+#ifdef OLD_LOC_CHECK
 	if (World)
 	{
 		Vector dir = direction.Normalise();
@@ -224,6 +311,66 @@ bool Engine::CPawn::Move(Engine::Vector direction)
 		}
 	}
 	return false;
+#else
+	//Check if that cell is occupied
+	if (World)
+	{
+		Vector newLocation = Location + direction.Normalise();
+		Cell cell = World->GetCellData(newLocation);
+
+		if (cell.Occupied || cell.OccupantId != -1)
+		{
+			if (CBaseObject* obj = World->GetObjectByObjectId(cell.OccupantId))
+			{
+				if (obj->Collision == CollisionType::Overlap)
+				{
+					obj->OnOverlap(this);
+					//we still need to move into that cell
+
+					//clear data of previous location cell
+					World->SetCellData(Location, { Location,false,-1 });
+					//set data for new cell
+					World->SetCellData(newLocation, { Location,CollisionType::Block == Collision,id });
+					Location = newLocation;
+					return true;
+				}
+				else if (obj->Collision == CollisionType::Block)
+				{
+					//we could not move so we stayed in place
+					return false;
+				}
+				else
+				{
+					//clear data of previous location cell
+					World->SetCellData(Location, { Location,false,-1 });
+					//set data for new cell
+					World->SetCellData(newLocation, { newLocation,CollisionType::Block == Collision,id });
+					Location = newLocation;
+					return true;
+				}
+			}
+			else
+			{
+				//clear data of previous location cell
+				World->SetCellData(Location, { Location,false,-1 });
+				//set data for new cell
+				World->SetCellData(newLocation, { newLocation,CollisionType::Block == Collision,id });
+				Location = newLocation;
+				return true;
+			}
+		}
+		else
+		{
+			//clear data of previous location cell
+			World->SetCellData(Location, { Location,false,-1 });
+			//set data for new cell
+			World->SetCellData(newLocation, { newLocation,CollisionType::Block == Collision,id });
+			Location = newLocation;
+			return true;
+		}
+	}
+	return false;
+#endif
 }
 
 void Engine::CPawn::Update()

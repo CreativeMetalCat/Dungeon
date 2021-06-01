@@ -13,6 +13,10 @@ namespace Dungeon
 
 		//Who is going to be attacked next
 		CPawn* target = nullptr;
+
+		void UpdateItemUI(int id);
+
+		void RemoveUIItem(String name, int id);
 	public:
 		CPlayer(Engine::UI::CUIBase* _inventoryFrame = nullptr);
 
@@ -23,6 +27,8 @@ namespace Dungeon
 
 		// Inherited via CPawn
 		virtual void Update() override;
+
+		virtual void OnItemCountUpdated(int id)override;
 
 		int Mana = 1;
 	};

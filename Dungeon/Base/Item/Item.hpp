@@ -43,11 +43,11 @@ namespace Engine
 			Luck
 		};
 
-		Item(String _name, String displayName, int maxAmout, int currentAmout) :
-			name(_name), DisplayName(displayName), MaxAmout(maxAmout), CurrentAmout(currentAmout) {}
+		Item(String _name, String displayName, int maxAmout, int CurrentAmount) :
+			name(_name), DisplayName(displayName), MaxAmout(maxAmout), CurrentAmount(CurrentAmount) {}
 
 		//What kind of item this is 
-		EEquippableType Type = EEquippableType::None;
+		EEquippableType EquippableType = EEquippableType::None;
 
 		String name = "item0";
 
@@ -55,7 +55,7 @@ namespace Engine
 
 		int MaxAmout = 99;
 
-		int CurrentAmout = 0;
+		int CurrentAmount = 0;
 
 		//These effects will be applied
 		Map<EEffectType, int> Effects = Map<EEffectType, int>();

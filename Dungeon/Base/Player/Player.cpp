@@ -6,26 +6,44 @@
 #include <string>
 #include "Base/Render/RenderMacros.h"
 
-Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame) 
+
+void Dungeon::CPlayer::UpdateItemUI(int id)
+{
+	inventoryFrame->ChildrenUI[id]->DisplayName = String(Items[id].DisplayName + " x " + STRING(Items[id].CurrentAmount));
+}
+
+void Dungeon::CPlayer::RemoveUIItem(String name, int id)
+{
+	if (inventoryFrame->ChildrenUI.valid_index(id))
+	{ 
+		inventoryFrame->ChildrenUI[id]->Destroy();
+		inventoryFrame->ChildrenUI.erase(inventoryFrame->ChildrenUI.begin() + id); 
+	}
+}
+
+Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
 	:Engine::CPawn('@'),inventoryFrame(_inventoryFrame)
 {
 	Faction = Engine::EFaction::Player;
 	UpdateType = Engine::EUpdateType::EventOnly;
-	Health = 1;
+	Health = 10;
+
+	OnItemCountUpdatedEvent.Bind(static_cast<void(Engine::CBaseObject::*)(int)>(&CPlayer::UpdateItemUI));
+	OnItemRemovedEvent.Bind(static_cast<void(Engine::CBaseObject::*)(String, int)>(&CPlayer::RemoveUIItem));
 }
 
 bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId, bool auto_eqiup)
 {
 	bool res = CPawn::AddItem(item, amountLeft, resultId);
 	//if we have less items that we had in the start
-	if (amountLeft != item.CurrentAmout)
+	if (amountLeft != item.CurrentAmount && (amountLeft > 0 || resultId != -1))
 	{
 		if (World)
 		{
 			World->CreateUI<Engine::UI::CUIBase>(
 				inventoryFrame,
 				item.name + "_ui",
-				std::string(item.DisplayName + " x " + std::to_string(item.CurrentAmout)),
+				String(item.DisplayName + " x " + STRING(item.CurrentAmount)),
 				Engine::Vector(1, 1 + (resultId == -1 ? 0 : resultId)),
 				Engine::Vector(0, 0), false);
 		}
@@ -117,4 +135,9 @@ void Dungeon::CPlayer::Update()
 			target = nullptr;
 		}
 	}
+}
+
+void Dungeon::CPlayer::OnItemCountUpdated(int id)
+{
+	CPawn::OnItemCountUpdated(id);
 }

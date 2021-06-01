@@ -1,5 +1,6 @@
 #pragma once
 #include "Types/Types.hpp"
+#include "Base/Events/Event.hpp"
 
 namespace Engine 
 {
@@ -27,6 +28,7 @@ namespace Engine
 	//base object for everything that player will interact in world
 	class CBaseObject
 	{
+	
 	protected:
 		bool pendingKill = false;
 
@@ -36,8 +38,8 @@ namespace Engine
 
 		bool Valid()const { return !pendingKill; }
 
-		//id is not used for anything as of now, but could be useful for debug
-		unsigned int id = 0;
+		//unique object id that doesn't change during it's life time and will not be given more then once in the world
+		int id = 0;
 
 		CBaseObject(RenderData _data = RenderData(), String name = "CBaseObject"):data(_data),Name(name){}
 
@@ -69,5 +71,8 @@ namespace Engine
 		virtual void Draw(Vector locationOffset);
 
 		virtual void Destroy();
+
+		//This function is called once every variable is set
+		virtual void Init();
 	};
 }

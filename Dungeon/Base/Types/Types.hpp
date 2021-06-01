@@ -19,6 +19,8 @@ using Pair = std::pair<Key,Value>;
 #define Value second
 #pragma endregion
 
+
+
 //array of pairs
 template<class Key,class Value>
 using Map = std::vector<std::pair<Key, Value>>;
