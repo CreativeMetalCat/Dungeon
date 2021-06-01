@@ -33,6 +33,11 @@ namespace Engine
 		bool pendingKill = false;
 
 		RenderData data;
+	events:
+		//this event is called right when Destroyed function is called 
+		//and before object is actually deleted,
+		//which is why this even is the best time to clean up references
+		CEvent<void(CBaseObject::*)(CBaseObject*obj)> OnDestroyed;
 	public:
 		String Name = "CBaseObject";
 

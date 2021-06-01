@@ -21,6 +21,84 @@ void Dungeon::CPlayer::RemoveUIItem(String name, int id)
 	}
 }
 
+void Dungeon::CPlayer::generateTargetList()
+{
+	//reset the value
+	currentTargetSelectionId = 0;
+	if (World)
+	{
+		for (auto it = World->Objects.begin(); it != World->Objects.end(); ++it)
+		{
+			(*it)->OnDestroyed.UnBind((static_cast<void(Engine::CBaseObject::*)(Engine::CBaseObject*)>(&CPlayer::onObjectFromTargetListDestoryed)));
+		}
+		targetList.clear();
+		target = nullptr;
+
+
+		for (auto it = World->Objects.begin(); it != World->Objects.end(); ++it)
+		{
+			if ((*it)->Location.Distance(Location) <= 2/*Range will be defined by player's weapon ,but will rarely go above 4*/
+				&& (*it) != this
+				&& (*it)->Faction == Engine::EFaction::EnemyOfAll)
+			{
+				targetList.push_back(*it);
+				(*it)->OnDestroyed.Bind((static_cast<void(Engine::CBaseObject::*)(Engine::CBaseObject*)>(&CPlayer::onObjectFromTargetListDestoryed)));
+			}
+		}
+
+		if (targetList.empty())
+		{
+			currentTargetSelectionId = -1;
+		}
+		selectNewTarget();
+	}
+
+}
+
+void Dungeon::CPlayer::selectNewTarget()
+{
+	if (currentTargetSelectionId != -1)
+	{
+		try
+		{
+			if (target)
+			{
+				target->SetSelected(false);
+			}
+		}
+		catch (const std::exception&)
+		{
+			target = nullptr;
+		}
+		
+		//World objects MUST never have faction of "EnemyOfAll"
+		target = static_cast<Engine::CPawn*>(targetList[currentTargetSelectionId]);
+		target->SetSelected(true);
+	}
+	else
+	{
+		if (target && target->Valid())
+		{
+			target->SetSelected(false);
+			target = nullptr;
+		}
+		else
+		{
+			target = nullptr;
+		}
+	}
+}
+
+void Dungeon::CPlayer::onObjectFromTargetListDestoryed(CBaseObject* obj)
+{
+	if (obj == this->target)
+	{
+		target = nullptr;
+	}
+	targetList.erase(std::find(targetList.begin(), targetList.end(), obj));
+	selectNewTarget();
+}
+
 Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
 	:Engine::CPawn('@'),inventoryFrame(_inventoryFrame)
 {
@@ -60,24 +138,28 @@ void Dungeon::CPlayer::ProcessInput(int input)
 	{
 		Move(Engine::Vector(-1, 0));
 		World->GameplayUpdate = true;
+		generateTargetList();
 		break;
 	}
 	case KEY_RIGHT:
 	{
 		Move(Engine::Vector(1, 0));
 		World->GameplayUpdate = true;
+		generateTargetList();
 		break;
 	}
 	case KEY_DOWN:
 	{
 		Move(Engine::Vector(0, 1));
 		World->GameplayUpdate = true;
+		generateTargetList();
 		break;
 	}
 	case KEY_UP:
 	{
 		Move(Engine::Vector(0, -1));
 		World->GameplayUpdate = true;
+		generateTargetList();
 		break;
 	}
 	case ' ':
@@ -90,9 +172,27 @@ void Dungeon::CPlayer::ProcessInput(int input)
 		World->GameplayUpdate = true;
 		break;
 	}
-	case 'g':
+	case '5':
 	{
-		flash();
+		//select prev enemy
+		//this action does not cause game to update
+		currentTargetSelectionId--;
+		if (currentTargetSelectionId < 0)
+		{
+			currentTargetSelectionId = targetList.size() - 1;
+		}
+		selectNewTarget();
+	}
+	case '6':
+	{
+		//select next enemy
+		//this action does not cause game to update
+		currentTargetSelectionId++;
+		if (currentTargetSelectionId >= targetList.size())
+		{
+			currentTargetSelectionId = 0;
+		}
+		selectNewTarget();
 	}
 	default:
 		break;
@@ -102,39 +202,6 @@ void Dungeon::CPlayer::ProcessInput(int input)
 void Dungeon::CPlayer::Update()
 {
 	CPawn::Update();
-
-	//find enemies in range and select the first one
-	Array<CBaseObject*>::iterator it = std::find_if(World->Objects.begin(), World->Objects.end(),
-		[this](CBaseObject* obj)
-		{
-			return
-				obj->Location.Distance(Location) <= 2/*Range will be defined by player's weapon ,but will rarely go above 4*/
-				&& obj != this
-				&& obj->Faction == Engine::EFaction::EnemyOfAll;
-		}
-	);
-	if (it != World->Objects.end() && (*it) != target)
-	{
-		if (target)
-		{
-			target->SetSelected(false);
-		}
-		//World objects MUST never have faction of "EnemyOfAll"
-		target = static_cast<Engine::CPawn*>(*it);
-		target->SetSelected(true);
-	}
-	else if (it == World->Objects.end())
-	{
-		if (target && target->Valid())
-		{
-			target->SetSelected(false);
-			target = nullptr;
-		}
-		else
-		{
-			target = nullptr;
-		}
-	}
 }
 
 void Dungeon::CPlayer::OnItemCountUpdated(int id)

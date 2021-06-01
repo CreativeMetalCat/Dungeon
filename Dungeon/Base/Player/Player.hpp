@@ -17,6 +17,17 @@ namespace Dungeon
 		void UpdateItemUI(int id);
 
 		void RemoveUIItem(String name, int id);
+
+		Array<CBaseObject*>targetList = Array<CBaseObject*>();
+
+		int currentTargetSelectionId = -1;
+
+		//Fully rewrites targetList
+		void generateTargetList();
+
+		void selectNewTarget();
+
+		void onObjectFromTargetListDestoryed(CBaseObject* obj);
 	public:
 		CPlayer(Engine::UI::CUIBase* _inventoryFrame = nullptr);
 

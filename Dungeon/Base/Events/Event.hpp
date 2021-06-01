@@ -38,7 +38,7 @@ inline void CEvent<T>::UnBind(T func)
 	auto it = std::find(functions.begin(), functions.end(), func);
 	if (it != functions.end())
 	{
-		functions.erase();
+		functions.erase(it);
 	}
 }
 

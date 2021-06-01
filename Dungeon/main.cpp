@@ -81,6 +81,11 @@ int main()
 	enemy->Location = Vector(5, 5);
 	enemy->Collision = CollisionType::Block;
 	enemy->Init();
+
+	CEnemyBase* enemy2 = world->SpawnObject<CEnemyBase>();
+	enemy2->Location = Vector(8, 5);
+	enemy2->Collision = CollisionType::Block;
+	enemy2->Init();
 	
 	bool has = false;
 	CItemPickup* item = world->SpawnObject<CItemPickup>(world->GetItemDefaultData("trash",has));
