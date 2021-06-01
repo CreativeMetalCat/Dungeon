@@ -56,6 +56,7 @@ void Engine::CEnemyBase::Die(CBaseObject* killer)
 		Engine::CItemPickup* pickup = World->SpawnObject<Engine::CItemPickup>(drop);
 
 		pickup->Location = Location;
+		pickup->Init();
 	}
 
 	World->AddDebugMessage(Name + " died by the hands of " + killer->Name);

@@ -38,7 +38,26 @@ void Engine::CWorld::SetCellData(Vector loc, Cell cell)
 
 Engine::CBaseObject* Engine::CWorld::GetObjectByObjectId(unsigned int id)
 {
-	return *std::find_if(Objects.begin(), Objects.end(), [id](CBaseObject* obj) {return obj->id == id; });
+	try
+	{
+		auto it = std::find_if(Objects.begin(), Objects.end(), [id](CBaseObject* obj)
+			{
+				return obj->id == id; 
+			});
+		if (it == Objects.end())
+		{
+			return nullptr;
+		}
+		else
+		{
+			return *it;
+		}
+	}
+	catch (const std::exception&e)
+	{
+		return nullptr;
+	}
+	
 }
 
 Engine::Item Engine::CWorld::GetItemDefaultData(String itemName, bool& hasData) const
@@ -73,6 +92,14 @@ void Engine::CWorld::UpdateUI()
 			(*it)->ProcessInput(CurrenInput);
 		}
 		(*it)->Draw();
+	}
+
+	for (int i = UIElements.size() - 1; i > -1; --i)
+	{
+		if (!UIElements[i]->Valid())
+		{
+			UIElements.erase(UIElements.begin() + i);
+		}
 	}
 
 	if (DebugOutput && !debugOutputMessages.empty())

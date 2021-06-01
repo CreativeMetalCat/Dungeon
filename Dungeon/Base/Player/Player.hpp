@@ -15,6 +15,8 @@ namespace Dungeon
 		CPawn* target = nullptr;
 
 		void UpdateItemUI(int id);
+
+		void RemoveUIItem(String name, int id);
 	public:
 		CPlayer(Engine::UI::CUIBase* _inventoryFrame = nullptr);
 

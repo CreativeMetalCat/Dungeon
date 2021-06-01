@@ -46,7 +46,7 @@ bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId,bool auto_e
 		resultId = Items.size();
 		Items.push_back(item);
 		amountLeft = 0;
-		OnItemAddedEvent.BroadCast(this);
+		OnItemAddedEvent.BroadCast(this, item.DisplayName, Items.size() - 1);
 		if (auto_eqiup)
 		{
 			EquipItem(resultId);
@@ -68,14 +68,24 @@ bool Engine::CPawn::RemoveItem(String name, int amount, int& amount_left)
 			{
 				Items[i].CurrentAmount -= amount_left;
 				amount_left = 0;
+				OnItemCountUpdated(i);
 				break;
 			}
 			else
 			{
 				amount_left -= Items[i].CurrentAmount;
 				Items[i].CurrentAmount -= (amount_left + Items[i].CurrentAmount);
+				OnItemCountUpdated(i);
 			}
 			//Items[i].CurrentAmount -= (Items[i].CurrentAmount >= amount_left) ? amount_left : Items[i].CurrentAmount;
+		}
+	}
+	for (int i = Items.size() - 1; i > -1; i--)
+	{
+		if (Items[i].CurrentAmount == 0)
+		{
+			OnItemRemovedEvent.BroadCast(this, Items[i].name, i);
+			Items.erase(Items.begin() + i);	
 		}
 	}
 	return false;
@@ -338,6 +348,15 @@ bool Engine::CPawn::Move(Engine::Vector direction)
 					Location = newLocation;
 					return true;
 				}
+			}
+			else
+			{
+				//clear data of previous location cell
+				World->SetCellData(Location, { Location,false,-1 });
+				//set data for new cell
+				World->SetCellData(newLocation, { newLocation,CollisionType::Block == Collision,id });
+				Location = newLocation;
+				return true;
 			}
 		}
 		else

@@ -11,7 +11,10 @@ namespace Engine
 	events:
 		
 		//Called when there is a new entry to the item list
-		CEvent<void(CBaseObject::*)()>OnItemAddedEvent;
+		CEvent<void(CBaseObject::*)(String/*name of the item for display */,int/*id of item*/)>OnItemAddedEvent;
+
+		//Called when there is a new entry to the item list
+		CEvent<void(CBaseObject::*)(String/*name of the item for display*/, int/*id of item*/)>OnItemRemovedEvent;
 
 		//Called when Count of item in the inventory is updated
 		CEvent<void(CBaseObject::*)(int/*id of item*/)>OnItemCountUpdatedEvent;

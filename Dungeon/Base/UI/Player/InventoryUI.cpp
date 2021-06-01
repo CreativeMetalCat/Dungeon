@@ -1,5 +1,6 @@
 #include "InventoryUI.hpp"
 #include "World.h"
+#include "Base/Item/ItemPickup.hpp"
 
 void Dungeon::CInventoryUI::changeSelection(int selectionId)
 {
@@ -25,17 +26,16 @@ void Dungeon::CInventoryUI::ProcessInput(int input)
 		key 3 - drops currently selected item
 		key 4 - use current item
 		*/
-		switch (input)
-		{
-		case '1':
+		if (input == '1')
 		{
 			changeSelection(currentSelection > 0 ? currentSelection - 1 : owningPlayer->GetCurrentItemCount() - 1);
-			break;
 		}
-		case '2':
+		if (input == '2')
+		{
 			changeSelection(currentSelection < owningPlayer->GetCurrentItemCount() - 1 ? currentSelection + 1 : 0);
-			break;
-		case '3':
+		}
+		if (input == '3')
+		{
 			/*
 			Dropping item is done in n steps
 			* 1) Check if we have this item
@@ -44,24 +44,53 @@ void Dungeon::CInventoryUI::ProcessInput(int input)
 			* 4.1) If there is -> add to it
 			* 4.2) If there is not -> spawn new one
 			*/
+
 			bool has;
-			owningPlayer->GetItem(currentSelection, has);
+			int left;
+			Engine::Item item = owningPlayer->GetItem(currentSelection, has);
 			if (has)
 			{
 				bool has_empty_space = true;
-				//this iteration idea will be slow no matter which way you look
-				//but it's easiest to use and change and dropping operation would not be called a lot anyway
-				for (auto it = owningPlayer->World->Objects.begin(); it != owningPlayer->World->Objects.end(); ++it)
+				//we check 8 cells near player, stop if find empty one
+				//starts with -1 because we need go left -> right ; up->down
+				for (int x = -1; x < 2; x++)
 				{
-					if ((*it)->Location.Distance(owningPlayer->Location) <= 1)
+					for (int y = -1; y < 2; y++)
 					{
-						has_empty_space = false;
-						break;
+						Engine::Cell cell = owningPlayer->World->GetCellData(Vector(x + owningPlayer->Location.X, y + owningPlayer->Location.Y));
+						if (!cell.Occupied && cell.OccupantId == -1)//fully empty cell
+						{
+							//spawn item here
+							Engine::CItemPickup* pickup = owningPlayer->World->SpawnObject<Engine::CItemPickup>(item);
+							pickup->Item.CurrentAmount = 1;
+							pickup->Location = Vector(x + owningPlayer->Location.X, y + owningPlayer->Location.Y);
+							pickup->Init();
+							owningPlayer->RemoveItem(item.name, 1, left);
+							
+							owningPlayer->World->GameplayUpdate = true;
+							return;
+						}
+						else if (cell.OccupantId != -1)//not blocking but something is there
+						{
+							if (Engine::CItemPickup* pickup = dynamic_cast<Engine::CItemPickup*>(owningPlayer->World->GetObjectByObjectId(cell.OccupantId)))
+							{
+								if (pickup->Item.CurrentAmount + 1 <= pickup->Item.MaxAmout && pickup->Item.name == item.name)
+								{
+									pickup->Item.CurrentAmount += 1;//successfully put away one item
+									
+									owningPlayer->RemoveItem(item.name, 1, left);
+									owningPlayer->World->GameplayUpdate = true;
+									break;
+								}
+								//we could not add item to existing item drop
+							}
+						}
 					}
 				}
+
 			}
-			break;
-		case '4':
+		}
+		if (input == '4')
 		{	
 			//We need to equip/consume the item
 			//first the equippement
@@ -79,10 +108,6 @@ void Dungeon::CInventoryUI::ProcessInput(int input)
 					owningPlayer->ConsumeItem(currentSelection);
 				}
 			}
-			break;
-		}
-		default:
-			break;
 		}
 	}
 }

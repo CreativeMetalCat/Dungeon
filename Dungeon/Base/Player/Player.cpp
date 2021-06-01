@@ -12,6 +12,15 @@ void Dungeon::CPlayer::UpdateItemUI(int id)
 	inventoryFrame->ChildrenUI[id]->DisplayName = String(Items[id].DisplayName + " x " + STRING(Items[id].CurrentAmount));
 }
 
+void Dungeon::CPlayer::RemoveUIItem(String name, int id)
+{
+	if (inventoryFrame->ChildrenUI.valid_index(id))
+	{ 
+		inventoryFrame->ChildrenUI[id]->Destroy();
+		inventoryFrame->ChildrenUI.erase(inventoryFrame->ChildrenUI.begin() + id); 
+	}
+}
+
 Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
 	:Engine::CPawn('@'),inventoryFrame(_inventoryFrame)
 {
@@ -20,6 +29,7 @@ Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
 	Health = 10;
 
 	OnItemCountUpdatedEvent.Bind(static_cast<void(Engine::CBaseObject::*)(int)>(&CPlayer::UpdateItemUI));
+	OnItemRemovedEvent.Bind(static_cast<void(Engine::CBaseObject::*)(String, int)>(&CPlayer::RemoveUIItem));
 }
 
 bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId, bool auto_eqiup)
