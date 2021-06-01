@@ -54,6 +54,7 @@ int main()
 		obj->Collision = CollisionType::Block;
 		obj->Location.Y = i;
 		obj->Location.X = 0;
+		obj->Init();
 		if (i == 0 || i == 9)
 		{
 			for (int u = 1; u < 10; u++)
@@ -62,6 +63,7 @@ int main()
 				objt->Collision = CollisionType::Block;
 				objt->Location.Y = i;
 				objt->Location.X = u;
+				objt->Init();
 			}
 		}
 
@@ -71,18 +73,22 @@ int main()
 			obj2->Collision = CollisionType::Block;
 			obj2->Location.Y = i;
 			obj2->Location.X = 10;
+			obj2->Init();
 		}
 
 	}
 	CEnemyBase* enemy = world->SpawnObject<CEnemyBase>();
 	enemy->Location = Vector(5, 5);
 	enemy->Collision = CollisionType::Block;
+	enemy->Init();
 	
 	bool has = false;
 	CItemPickup* item = world->SpawnObject<CItemPickup>(world->GetItemDefaultData("trash",has));
 	item->Location = Vector(5, 6);
+	item->Init();
 	CItemPickup* item2 = world->SpawnObject<CItemPickup>(world->GetItemDefaultData("trash", has));
 	item2->Location = Vector(5, 7);
+	item2->Init();
 
 	world->DebugOutput = world->CreateUI<UI::CUIBase>(nullptr, "DebugUIFrame", "-Debug Info-", Vector(0, 20), Vector(15, 10), true);
 

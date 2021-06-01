@@ -37,8 +37,6 @@ namespace Engine
 		String Name = "CBaseObject";
 
 		bool Valid()const { return !pendingKill; }
-		
-		CBaseObject();
 
 		//unique object id that doesn't change during it's life time and will not be given more then once in the world
 		int id = 0;
@@ -73,5 +71,8 @@ namespace Engine
 		virtual void Draw(Vector locationOffset);
 
 		virtual void Destroy();
+
+		//This function is called once every variable is set
+		virtual void Init();
 	};
 }
