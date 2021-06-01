@@ -45,12 +45,14 @@ namespace Engine
 		int ArmorItem = -1;
 #pragma endregion
 
+		int GetCurrentItemCount()const { return Items.size(); }
+
 		int MaxItems = 5;
 
 		//Adds item to the inventory. If item slot of the same type as given item -> this item will be put in that slot
 		virtual bool AddItem(Item item, int& amountLeft, int& resultId, bool auto_eqiup = true);
 
-		virtual bool RemoveItem(String name, int amount);
+		virtual bool RemoveItem(String name, int amount, int& amount_left);
 
 		Item GetItem(String name, bool& has);
 

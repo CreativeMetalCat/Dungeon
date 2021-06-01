@@ -9,7 +9,7 @@
 
 void Dungeon::CPlayer::UpdateItemUI(int id)
 {
-	inventoryFrame->ChildrenUI[id]->DisplayName = String(Items[id].DisplayName + " x " + STRING(Items[id].CurrentAmout));
+	inventoryFrame->ChildrenUI[id]->DisplayName = String(Items[id].DisplayName + " x " + STRING(Items[id].CurrentAmount));
 }
 
 Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
@@ -26,14 +26,14 @@ bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId
 {
 	bool res = CPawn::AddItem(item, amountLeft, resultId);
 	//if we have less items that we had in the start
-	if (amountLeft != item.CurrentAmout && (amountLeft > 0 || resultId != -1))
+	if (amountLeft != item.CurrentAmount && (amountLeft > 0 || resultId != -1))
 	{
 		if (World)
 		{
 			World->CreateUI<Engine::UI::CUIBase>(
 				inventoryFrame,
 				item.name + "_ui",
-				String(item.DisplayName + " x " + STRING(item.CurrentAmout)),
+				String(item.DisplayName + " x " + STRING(item.CurrentAmount)),
 				Engine::Vector(1, 1 + (resultId == -1 ? 0 : resultId)),
 				Engine::Vector(0, 0), false);
 		}

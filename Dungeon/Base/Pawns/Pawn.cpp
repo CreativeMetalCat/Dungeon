@@ -14,24 +14,24 @@ Engine::CPawn::CPawn(char displayChar):Engine::CBaseObject(displayChar)
 
 bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId,bool auto_eqiup)
 {
-	amountLeft = item.CurrentAmout;
+	amountLeft = item.CurrentAmount;
 	resultId = -1;
 	//check if can add the item
 	for (int i = 0; i < Items.size(); i++)
 	{
 		if (Items[i].name == item.name)
 		{
-			if (Items[i].MaxAmout - Items[i].CurrentAmout > 0)
+			if (Items[i].MaxAmout - Items[i].CurrentAmount > 0)
 			{
-				if (amountLeft >= Items[i].MaxAmout - Items[i].CurrentAmout)
+				if (amountLeft >= Items[i].MaxAmout - Items[i].CurrentAmount)
 				{
-					amountLeft = amountLeft - Items[i].MaxAmout - Items[i].CurrentAmout;
-					Items[i].CurrentAmout = Items[i].MaxAmout;
+					amountLeft = amountLeft - Items[i].MaxAmout - Items[i].CurrentAmount;
+					Items[i].CurrentAmount = Items[i].MaxAmout;
 					OnItemCountUpdated(i);
 				}
 				else
 				{
-					Items[i].CurrentAmout += amountLeft;
+					Items[i].CurrentAmount += amountLeft;
 					amountLeft = 0;
 					OnItemCountUpdated(i);
 					return true;
@@ -44,6 +44,7 @@ bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId,bool auto_e
 		resultId = Items.size();
 		Items.push_back(item);
 		amountLeft = 0;
+		OnItemAddedEvent.BroadCast(this);
 		if (auto_eqiup)
 		{
 			EquipItem(resultId);
@@ -52,8 +53,29 @@ bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId,bool auto_e
 	return amountLeft == 0;
 }
 
-bool Engine::CPawn::RemoveItem(String name, int amount)
+bool Engine::CPawn::RemoveItem(String name, int amount, int& amount_left)
 {
+	if (amount <= 0) return false;
+
+	amount_left = amount;
+	for (int i = 0; i < Items.size(); i++)
+	{
+		if (Items[i].name == name)
+		{
+			if (Items[i].CurrentAmount >= amount_left)
+			{
+				Items[i].CurrentAmount -= amount_left;
+				amount_left = 0;
+				break;
+			}
+			else
+			{
+				amount_left -= Items[i].CurrentAmount;
+				Items[i].CurrentAmount -= (amount_left + Items[i].CurrentAmount);
+			}
+			//Items[i].CurrentAmount -= (Items[i].CurrentAmount >= amount_left) ? amount_left : Items[i].CurrentAmount;
+		}
+	}
 	return false;
 }
 
