@@ -1,6 +1,7 @@
 #include "Pawn.hpp"
 #include "World.h"
 
+//#define OLD_LOC_CHECK
 
 void Engine::CPawn::OnItemCountUpdated(int id)
 {
@@ -193,7 +194,7 @@ void Engine::CPawn::MoveTo(Engine::Vector newLocation)
 	if (World)
 	{
 		//do a very basic for loop to find if there are objects in that spot
-
+#ifdef OLD_LOC_CHECK
 		Array<CBaseObject*>::iterator it =  std::find_if(World->Objects.begin(), World->Objects.end(), [newLocation](Engine::CBaseObject* obj) {return obj->Location == newLocation; });
 		if (it != World->Objects.end())
 		{
@@ -215,7 +216,51 @@ void Engine::CPawn::MoveTo(Engine::Vector newLocation)
 			//move pawn and stay happy
 			Location = newLocation;
 		}
+#else
+		//Check if that cell is occupied
+		if(World)
+		{
+			Cell cell = World->GetCellData(newLocation);
+			if (cell.Occupied || cell.OccupantId != -1)
+			{
+				if (CBaseObject* obj = World->GetObjectByObjectId(cell.OccupantId))
+				{
+					if (obj->Collision == CollisionType::Overlap)
+					{
+						obj->OnOverlap(this);
+						//we still need to move into that cell
+
+						//clear data of previous location cell
+						World->SetCellData(Location, { Location,false,-1 });
+						//set data for new cell
+						World->SetCellData(newLocation, { Location,CollisionType::Block == Collision,id });
+						Location = newLocation;
+					}
+					else if (obj->Collision == CollisionType::Block)
+					{
+						//we could not move so we stayed in place
+					}
+					else
+					{
+						//clear data of previous location cell
+						World->SetCellData(Location, { Location,false,-1 });
+						//set data for new cell
+						World->SetCellData(newLocation, { Location,CollisionType::Block == Collision,id });
+						Location = newLocation;
+					}
+				}
+			}
+			else
+			{
+				//clear data of previous location cell
+				World->SetCellData(Location, { Location,false,-1 });
+				//set data for new cell
+				World->SetCellData(newLocation, { Location,CollisionType::Block == Collision,id });
+				Location = newLocation;
+			}
+		}
 	}
+#endif
 }
 
 bool Engine::CPawn::Move(Engine::Vector direction)

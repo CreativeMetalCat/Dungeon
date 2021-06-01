@@ -6,6 +6,15 @@
 
 namespace Engine
 {
+	struct Cell
+	{
+	public:
+		Vector Location;
+
+		bool Occupied = false;
+
+		int OccupantId = -1;
+	};
 	
 	/*
 	* World is the class that manages object updates, ui updates etc.
@@ -22,17 +31,29 @@ namespace Engine
 		Array<String>debugOutputMessages = Array<String>();
 
 		Array<Engine::Item>defaultItemData = Array<Engine::Item>();
+
+		Array<Cell>occupanceData = Array<Cell>();
 	protected:
 		//File will be loaded into the memory in the start of the game and then data will be read from here
 		String entityFileText;
 	public:
 		CWorld();
 
+		/*Get's cell data for a specific location
+		If game has no record of that cell it will be added*/
+		Cell GetCellData(Vector loc);
+
+		/*Set data for a cell in this location
+		NOTE:There are no chekcs so any object can change any cell's data*/
+		void SetCellData(Vector loc, Cell cell);
+
 		int CurrenInput = -1;
 
 		int MaxDebugMessageCount = -1;
 
 		UI::CUIBase* DebugOutput = nullptr;
+
+		CBaseObject* GetObjectByObjectId(unsigned int id);
 
 		//Default item data is basically the default thing
 		//this function uses std::find_if for search and basically iterates over whole item array so avoid using in big amounts in very close parts

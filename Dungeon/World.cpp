@@ -12,6 +12,35 @@ Engine::CWorld::CWorld()
 	LoadItemFile();
 }
 
+Engine::Cell Engine::CWorld::GetCellData(Vector loc)
+{
+	auto it = std::find_if(occupanceData.begin(), occupanceData.end(), [loc](Cell cell) {return cell.Location == loc; });
+	if (it == occupanceData.end())
+	{
+		occupanceData.push_back({ loc,false,-1 });
+		return occupanceData[occupanceData.size() - 1];
+	}
+	return *it;
+}
+
+void Engine::CWorld::SetCellData(Vector loc, Cell cell)
+{
+	auto it = std::find_if(occupanceData.begin(), occupanceData.end(), [loc](Cell cell) {return cell.Location == loc; });
+	if (it == occupanceData.end())
+	{
+		occupanceData.push_back(cell);
+	}
+	else
+	{
+		(*it) = cell;
+	}
+}
+
+Engine::CBaseObject* Engine::CWorld::GetObjectByObjectId(unsigned int id)
+{
+	return *std::find_if(Objects.begin(), Objects.end(), [id](CBaseObject* obj) {return obj->id == id; });
+}
+
 Engine::Item Engine::CWorld::GetItemDefaultData(String itemName, bool& hasData) const
 {
 	if (!defaultItemData.empty())
