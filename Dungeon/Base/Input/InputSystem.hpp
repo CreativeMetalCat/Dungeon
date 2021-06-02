@@ -8,6 +8,9 @@ namespace Engine
 		class CInputSystem
 		{
 		public:
+
+			CInputSystem();
+
 			//What input happened during this frame
 			//Due to the fact that this is a console game only one input at a time can happen
 			int CurrentFrameInput = -1;
@@ -22,6 +25,9 @@ namespace Engine
 			//Note: it is done this way because this game is intended to only have one input
 			//Note2: This funtion is not meant for actual input getting -> use bool operator[](String inputName) for that
 			String operator[](int input);
+
+			//Loads input data from Input.dat
+			void LoadData();
 		};
 	}
 }

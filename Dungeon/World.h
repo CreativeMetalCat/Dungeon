@@ -3,6 +3,7 @@
 #include "Base/UI/UIBase.hpp"
 #include "Base/Macros.h"
 #include "Base/Item/Item.hpp"
+#include "Base/Input/InputSystem.hpp"
 
 namespace Engine
 {
@@ -38,6 +39,8 @@ namespace Engine
 		String entityFileText;
 	public:
 		CWorld();
+		//system for getting current input
+		Input::CInputSystem Input;
 
 		/*Get's cell data for a specific location
 		If game has no record of that cell it will be added*/
@@ -132,3 +135,4 @@ namespace Engine
 	}
 }
 
+#define INPUT_SYSTEM World->Input
