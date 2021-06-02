@@ -135,37 +135,32 @@ bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId
 
 void Dungeon::CPlayer::ProcessInput(int input)
 {
-	switch (input)
-	{
-	case KEY_LEFT:
+	
+	if(INPUT_SYSTEM["left"])
 	{
 		Move(Engine::Vector(-1, 0));
 		World->GameplayUpdate = true;
 		generateTargetList();
-		break;
 	}
-	case KEY_RIGHT:
+	if(INPUT_SYSTEM["right"])
 	{
 		Move(Engine::Vector(1, 0));
 		World->GameplayUpdate = true;
 		generateTargetList();
-		break;
 	}
-	case KEY_DOWN:
+	if (INPUT_SYSTEM["down"])
 	{
 		Move(Engine::Vector(0, 1));
 		World->GameplayUpdate = true;
 		generateTargetList();
-		break;
 	}
-	case KEY_UP:
+	if (INPUT_SYSTEM["up"])
 	{
 		Move(Engine::Vector(0, -1));
 		World->GameplayUpdate = true;
 		generateTargetList();
-		break;
 	}
-	case ' ':
+	if (INPUT_SYSTEM["attack"])
 	{
 		if (target)
 		{
@@ -173,9 +168,8 @@ void Dungeon::CPlayer::ProcessInput(int input)
 			flash();
 		}
 		World->GameplayUpdate = true;
-		break;
 	}
-	case '5':
+	if (INPUT_SYSTEM["prev_target"])
 	{
 		//select prev enemy
 		//this action does not cause game to update
@@ -186,7 +180,7 @@ void Dungeon::CPlayer::ProcessInput(int input)
 		}
 		selectNewTarget();
 	}
-	case '6':
+	if (INPUT_SYSTEM["nexr_target"])
 	{
 		//select next enemy
 		//this action does not cause game to update
@@ -196,9 +190,6 @@ void Dungeon::CPlayer::ProcessInput(int input)
 			currentTargetSelectionId = 0;
 		}
 		selectNewTarget();
-	}
-	default:
-		break;
 	}
 }
 
