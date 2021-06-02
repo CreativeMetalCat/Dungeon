@@ -71,9 +71,12 @@ void Dungeon::CPlayer::selectNewTarget()
 			target = nullptr;
 		}
 		
-		//World objects MUST never have faction of "EnemyOfAll"
-		target = static_cast<Engine::CPawn*>(targetList[currentTargetSelectionId]);
-		target->SetSelected(true);
+		if (targetList.valid_index(currentTargetSelectionId))
+		{
+			//World objects MUST never have faction of "EnemyOfAll"
+			target = static_cast<Engine::CPawn*>(targetList[currentTargetSelectionId]);
+			target->SetSelected(true);
+		}
 	}
 	else
 	{
