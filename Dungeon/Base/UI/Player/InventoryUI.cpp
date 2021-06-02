@@ -1,7 +1,6 @@
 #include "InventoryUI.hpp"
 #include "World.h"
 #include "Base/Item/ItemPickup.hpp"
-
 void Dungeon::CInventoryUI::changeSelection(int selectionId)
 {
 	//same as ChildrenUI.size() > selectionId && selectionId > -1
@@ -26,15 +25,15 @@ void Dungeon::CInventoryUI::ProcessInput(int input)
 		key 3 - drops currently selected item
 		key 4 - use current item
 		*/
-		if (input == '1')
+		if (owningPlayer->INPUT_SYSTEM["prev_item"])
 		{
 			changeSelection(currentSelection > 0 ? currentSelection - 1 : owningPlayer->GetCurrentItemCount() - 1);
 		}
-		if (input == '2')
+		if (owningPlayer->INPUT_SYSTEM["next_item"])
 		{
 			changeSelection(currentSelection < owningPlayer->GetCurrentItemCount() - 1 ? currentSelection + 1 : 0);
 		}
-		if (input == '3')
+		if (owningPlayer->INPUT_SYSTEM["drop_item"])
 		{
 			/*
 			Dropping item is done in n steps
@@ -90,7 +89,7 @@ void Dungeon::CInventoryUI::ProcessInput(int input)
 
 			}
 		}
-		if (input == '4')
+		if (owningPlayer->INPUT_SYSTEM["use_item"])
 		{	
 			//We need to equip/consume the item
 			//first the equippement
