@@ -37,7 +37,7 @@ namespace Engine
 		//this event is called right when Destroyed function is called 
 		//and before object is actually deleted,
 		//which is why this even is the best time to clean up references
-		CEvent<void(CBaseObject::*)(CBaseObject*obj)> OnDestroyed;
+		CEvent<void(CBaseObject::*)(CBaseObject*obj), CBaseObject*> OnDestroyed;
 	public:
 		String Name = "CBaseObject";
 

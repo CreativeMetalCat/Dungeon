@@ -5,7 +5,7 @@
 
 void Engine::CPawn::OnItemCountUpdated(int id)
 {
-	OnItemCountUpdatedEvent.BroadCast(this, id);
+	OnItemCountUpdatedEvent.BroadCast(id);
 }
 
 Engine::CPawn::CPawn(char displayChar):Engine::CBaseObject(displayChar)
@@ -46,7 +46,7 @@ bool Engine::CPawn::AddItem(Item item, int& amountLeft,int &resultId,bool auto_e
 		resultId = Items.size();
 		Items.push_back(item);
 		amountLeft = 0;
-		OnItemAddedEvent.BroadCast(this, item.DisplayName, Items.size() - 1);
+		OnItemAddedEvent.BroadCast(item.DisplayName, Items.size() - 1);
 		if (auto_eqiup)
 		{
 			EquipItem(resultId);
@@ -84,7 +84,7 @@ bool Engine::CPawn::RemoveItem(String name, int amount, int& amount_left)
 	{
 		if (Items[i].CurrentAmount == 0)
 		{
-			OnItemRemovedEvent.BroadCast(this, Items[i].name, i);
+			OnItemRemovedEvent.BroadCast(Items[i].name, i);
 			Items.erase(Items.begin() + i);	
 		}
 	}

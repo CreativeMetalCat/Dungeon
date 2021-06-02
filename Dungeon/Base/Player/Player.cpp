@@ -29,7 +29,7 @@ void Dungeon::CPlayer::generateTargetList()
 	{
 		for (auto it = World->Objects.begin(); it != World->Objects.end(); ++it)
 		{
-			(*it)->OnDestroyed.UnBind((static_cast<void(Engine::CBaseObject::*)(Engine::CBaseObject*)>(&CPlayer::onObjectFromTargetListDestoryed)));
+			(*it)->OnDestroyed.UnBind((static_cast<void(Engine::CBaseObject::*)(Engine::CBaseObject*)>(&CPlayer::onObjectFromTargetListDestoryed)), this);
 		}
 		targetList.clear();
 		target = nullptr;
@@ -42,7 +42,7 @@ void Dungeon::CPlayer::generateTargetList()
 				&& (*it)->Faction == Engine::EFaction::EnemyOfAll)
 			{
 				targetList.push_back(*it);
-				(*it)->OnDestroyed.Bind((static_cast<void(Engine::CBaseObject::*)(Engine::CBaseObject*)>(&CPlayer::onObjectFromTargetListDestoryed)));
+				(*it)->OnDestroyed.Bind((static_cast<void(Engine::CBaseObject::*)(Engine::CBaseObject*)>(&CPlayer::onObjectFromTargetListDestoryed)), this);
 			}
 		}
 
@@ -106,8 +106,8 @@ Dungeon::CPlayer::CPlayer(Engine::UI::CUIBase* _inventoryFrame)
 	UpdateType = Engine::EUpdateType::EventOnly;
 	Health = 10;
 
-	OnItemCountUpdatedEvent.Bind(static_cast<void(Engine::CBaseObject::*)(int)>(&CPlayer::UpdateItemUI));
-	OnItemRemovedEvent.Bind(static_cast<void(Engine::CBaseObject::*)(String, int)>(&CPlayer::RemoveUIItem));
+	OnItemCountUpdatedEvent.Bind(static_cast<void(Engine::CBaseObject::*)(int)>(&CPlayer::UpdateItemUI),this);
+	OnItemRemovedEvent.Bind(static_cast<void(Engine::CBaseObject::*)(String, int)>(&CPlayer::RemoveUIItem),this);
 }
 
 bool Dungeon::CPlayer::AddItem(Engine::Item item, int& amountLeft, int& resultId, bool auto_eqiup)

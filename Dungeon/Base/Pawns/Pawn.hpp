@@ -11,13 +11,13 @@ namespace Engine
 	events:
 		
 		//Called when there is a new entry to the item list
-		CEvent<void(CBaseObject::*)(String/*name of the item for display */,int/*id of item*/)>OnItemAddedEvent;
+		CEvent<void(CBaseObject::*)(String/*name of the item for display */,int/*id of item*/), CBaseObject*>OnItemAddedEvent;
 
 		//Called when there is a new entry to the item list
-		CEvent<void(CBaseObject::*)(String/*name of the item for display*/, int/*id of item*/)>OnItemRemovedEvent;
+		CEvent<void(CBaseObject::*)(String/*name of the item for display*/, int/*id of item*/), CBaseObject*>OnItemRemovedEvent;
 
 		//Called when Count of item in the inventory is updated
-		CEvent<void(CBaseObject::*)(int/*id of item*/)>OnItemCountUpdatedEvent;
+		CEvent<void(CBaseObject::*)(int/*id of item*/), CBaseObject*>OnItemCountUpdatedEvent;
 	protected:
 
 		typedef void (CBaseObject::* pFunc)();

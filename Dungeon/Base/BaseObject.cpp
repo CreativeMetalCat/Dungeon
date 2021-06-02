@@ -15,7 +15,7 @@ void Engine::CBaseObject::Destroy()
 {
 	//add code that will remove this object from game
 	pendingKill = true;
-	OnDestroyed.BroadCast(this,this);
+	OnDestroyed.BroadCast(this);
 }
 
 void Engine::CBaseObject::Init()
