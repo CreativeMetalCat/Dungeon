@@ -10,6 +10,7 @@ Engine::CWorld::CWorld()
 {
 	if (!LoadEntityFile()) { quick_exit(5); }
 	LoadItemFile();
+	Input = Input::CInputSystem();
 }
 
 Engine::Cell Engine::CWorld::GetCellData(Vector loc)
@@ -154,7 +155,7 @@ bool Engine::CWorld::LoadItemFile()
 		return false;
 	}
 
-	if (entityFileText == "")
+	if (itemFileText == "")
 	{
 		return false;
 	}
@@ -202,6 +203,7 @@ bool Engine::CWorld::LoadItemFile()
 
 void Engine::CWorld::ProcessInput()
 {
+	Input.CurrentFrameInput = CurrenInput;
 	//proccess input runs before any update
 	for (int i = 0; i < Objects.size(); i++)
 	{
